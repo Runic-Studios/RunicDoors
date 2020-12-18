@@ -1,0 +1,357 @@
+package com.runicrealms.runicdoors.commands;
+
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
+import com.runicrealms.runicdoors.RunicDoors;
+import com.runicrealms.runicdoors.config.ConfigSave;
+import com.runicrealms.runicdoors.config.DoorDelete;
+import com.runicrealms.runicdoors.doorStuff.Door;
+import com.runicrealms.runicdoors.doorStuff.DoorBlock;
+import com.runicrealms.runicdoors.doorStuff.DoorHandler;
+import com.runicrealms.runicdoors.doorStuff.DoorInteractor;
+import com.runicrealms.runicdoors.grid.GridLocation;
+import com.runicrealms.runicdoors.grid.NodeGrid;
+import com.runicrealms.runicdoors.utility.Particles;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.logging.Level;
+
+@CommandAlias("door|doors|d|doorcommand|runicdoors|runicdoor")
+public class DoorCommand extends co.aikar.commands.BaseCommand {
+    //used letters C E S N D R T A O Q P H V
+    @Subcommand("create|c")
+    @CommandCompletion("")
+    public void onDoorCreate(Player player) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        player.sendMessage("Creating a door for you!");
+        short id = DoorInteractor.newId();
+        Door door = new Door(player.getLocation(), id, "none", 5, new ArrayList<>(), false, 3, "BASIC");
+        ConfigSave.saveNode(door, RunicDoors.getRunicDoors().getDoorFileConfig());
+        DoorHandler.placeDoorInGrid(door);
+        RunicDoors.getRunicDoors().getDoors().put(door.getId() + "", door);
+        player.sendMessage("Its id is " + id);
+        RunicDoors.getRunicDoors().getEditors().put(player.getUniqueId(), door);
+
+        Particles.drawPinPoint(door.getLocation(), Color.RED, Color.WHITE);
+    }
+
+
+    @Subcommand("edit|e|disable|turnoffediting|editoff")
+    @CommandCompletion("")
+    public void onDoorEdit(Player player) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        if (RunicDoors.getRunicDoors().getEditors().containsKey(player.getUniqueId())) {
+            player.sendMessage("Turned off editing mode");
+            RunicDoors.getRunicDoors().getEditors().remove(player.getUniqueId());
+        } else {
+            player.sendMessage("create a door, or select one to turn on editing!");
+        }
+    }
+
+    @Subcommand("select|s|getclosest")
+    @CommandCompletion("")
+    public void onDoorSelect(Player player) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+
+        if (RunicDoors.getRunicDoors().getEditors().containsKey(player.getUniqueId())) {
+            player.sendMessage("You already have a door selected, but I'll swap it for you");
+            Door selection = DoorInteractor.getClosestNode(player);
+            if (selection == null) {
+                player.sendMessage("No Doors Nearby, still working on " + RunicDoors.getRunicDoors().getEditors().get(player.getUniqueId()).getId());
+                return;
+            }
+            player.sendMessage("Now working on " + selection.getId());
+            RunicDoors.getRunicDoors().getEditors().put(player.getUniqueId(), selection);
+
+            Particles.drawPinPoint(selection.getLocation(), Color.RED, Color.WHITE);
+
+        } else {
+            Door selection = DoorInteractor.getClosestNode(player);
+            if (selection == null) {
+                player.sendMessage("No Doors Nearby");
+                return;
+            }
+            player.sendMessage("Now working on " + selection.getId());
+            RunicDoors.getRunicDoors().getEditors().put(player.getUniqueId(), selection);
+            Particles.drawPinPoint(selection.getLocation(), Color.RED, Color.WHITE);
+        }
+    }
+
+    @Subcommand("selectid|sid")
+    @CommandCompletion("")
+    @Syntax("<id> &e- select by id")
+    public void onDoorSelectById(Player player, String id) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        if (RunicDoors.getRunicDoors().getDoors().get(id) != null) {
+            Door selection = RunicDoors.getRunicDoors().getDoors().get(id);
+            player.sendMessage("Now working on " + RunicDoors.getRunicDoors().getEditors().get(player.getUniqueId()).getId());
+            RunicDoors.getRunicDoors().getEditors().put(player.getUniqueId(), selection);
+
+            Particles.drawPinPoint(selection.getLocation(), Color.RED, Color.WHITE);
+        } else {
+            player.sendMessage("That Door is not in our list.");
+        }
+
+    }
+
+    @Subcommand("nearby|n|near|show")
+    @CommandCompletion("")
+    public void onNearbyDoors(Player player) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        int i = 0;
+        for (Door door : DoorHandler.getDoorGrid().getNearbyNodes(player.getLocation())) {
+            i++;
+            Particles.drawPinPoint(door.getLocation(), Color.RED, Color.WHITE);
+        }
+        player.sendMessage("There is " + i + " Doors Nearby!");
+    }
+
+    @Subcommand("delete|d")
+    @CommandCompletion("")
+    public void onDoorDelete(Player player) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        if (RunicDoors.getRunicDoors().getEditors().containsKey(player.getUniqueId())) {
+            player.sendMessage("Deleted ");
+            Door door = RunicDoors.getRunicDoors().getEditors().get(player.getUniqueId());
+            DoorHandler.getDoorGrid().removeElementInGrid(DoorHandler.getDoorGrid().getGridLocationFromLocation(door.getLocation()), door);
+            DoorDelete.deleteNode(door.getId() + "", RunicDoors.getRunicDoors().getDoorFileConfig());
+            RunicDoors.getRunicDoors().getDoors().remove(door.getId() + "");
+            RunicDoors.getRunicDoors().getEditors().remove(player.getUniqueId());
+        } else {
+            player.sendMessage("You don't have a door selected!");
+        }
+    }
+
+    @Subcommand("range|distance|proximity|r")
+    @CommandCompletion("1|2|3|4|5")
+    public void onDoorRange(Player player, String range) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        if (RunicDoors.getRunicDoors().getEditors().containsKey(player.getUniqueId())) {
+            Door door = RunicDoors.getRunicDoors().getEditors().get(player.getUniqueId());
+            int number = 5;
+            try {
+                if (range != null)
+                    number = Integer.parseInt(range);
+            } catch (NumberFormatException e) {
+                number = 5;
+            }
+
+            player.sendMessage("New range of " + number);
+            door.setDistance(number);
+            ConfigSave.saveNode(door, RunicDoors.getRunicDoors().getDoorFileConfig());
+            Particles.drawPinPoint(door.getLocation(), Color.RED, Color.WHITE);
+        } else {
+            player.sendMessage("You don't have a door selected!");
+        }
+    }
+
+    @Subcommand("time|openfor|openforseconds|t")
+    @CommandCompletion("1|2|3|4|5")
+    public void onDoorTime(Player player, String range) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        if (RunicDoors.getRunicDoors().getEditors().containsKey(player.getUniqueId())) {
+            Door door = RunicDoors.getRunicDoors().getEditors().get(player.getUniqueId());
+            int number = 5;
+            try {
+                if (range != null)
+                    number = Integer.parseInt(range);
+            } catch (NumberFormatException e) {
+                number = 5;
+            }
+
+            player.sendMessage("New time of " + number);
+            door.setDefaultTime(number);
+            ConfigSave.saveNode(door, RunicDoors.getRunicDoors().getDoorFileConfig());
+            Particles.drawPinPoint(door.getLocation(), Color.RED, Color.WHITE);
+        } else {
+            player.sendMessage("You don't have a door selected!");
+        }
+    }
+
+    @Subcommand("setanimation|animation|anim|a")
+    @CommandCompletion("BASIC|FADE|PARTICLE|SWAP|EXPLODE")
+    public void onDoorAnimate(Player player, String range) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        if (RunicDoors.getRunicDoors().getEditors().containsKey(player.getUniqueId())) {
+            Door door = RunicDoors.getRunicDoors().getEditors().get(player.getUniqueId());
+            String text = "BASIC";
+            if (RunicDoors.getRunicDoors().getAnimator().animations.containsKey(range)) {
+                text = range;
+            }
+
+            player.sendMessage("New animation of " + text);
+            door.setAnimation(range);
+            ConfigSave.saveNode(door, RunicDoors.getRunicDoors().getDoorFileConfig());
+            Particles.drawPinPoint(door.getLocation(), Color.RED, Color.WHITE);
+        } else {
+            player.sendMessage("You don't have a door selected!");
+        }
+    }
+    @Subcommand("perms|setpermissions|p|setperms")
+    @CommandCompletion("Doors.|none")
+    public void onDoorPerms(Player player, String range) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        if (RunicDoors.getRunicDoors().getEditors().containsKey(player.getUniqueId())) {
+            Door door = RunicDoors.getRunicDoors().getEditors().get(player.getUniqueId());
+
+            player.sendMessage("New permission of " + range);
+            door.setPermission(range);
+            ConfigSave.saveNode(door, RunicDoors.getRunicDoors().getDoorFileConfig());
+            Particles.drawPinPoint(door.getLocation(), Color.RED, Color.WHITE);
+        } else {
+            player.sendMessage("You don't have a door selected!");
+        }
+    }
+    @Subcommand("open|o|opendoor|unlock|dooropen|opensesame")
+    @CommandCompletion("")
+    public void onDoorOpen(Player player) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        if (RunicDoors.getRunicDoors().getEditors().containsKey(player.getUniqueId())) {
+            Door door = RunicDoors.getRunicDoors().getEditors().get(player.getUniqueId());
+            if (!RunicDoors.getRunicDoors().getOpenDoors().containsKey(door.getId() + "")) {
+                door.setOpen(true);
+                //always set open first
+                door.openForPlayer(player);
+
+            }
+            door.setTimeOpen(door.getTimeOpenDefault());
+        } else {
+            player.sendMessage("You don't have a door selected!");
+        }
+    }
+    @Subcommand("openid|oi|opendoorbyid|unlockid|dooropenid|opensesameid")
+    @CommandCompletion("id|1234")
+    public void onDoorOpenByID(CommandSender sender, String[] args) {
+        if(args.length==0){return;}
+        if(sender instanceof  Player) {
+            Player player = (Player) sender;
+            if (!player.isOp()) {
+                player.sendMessage("No perms");
+                return;
+            }
+            if (!RunicDoors.getRunicDoors().getDoors().containsKey(args[0] + "")) {player.sendMessage("That isn't a real door! "+args[0]); return;}
+            Door door =RunicDoors.getRunicDoors().getDoors().get(args[0] + "");
+            if(!RunicDoors.getRunicDoors().getOpenDoors().containsKey(door.getId()+"")) {
+                door.setOpen(true);
+                //always set open first
+                door.openForPlayer(player);
+
+            }
+            int number = door.getTimeOpenDefault();
+            try {
+                if (args[1] != null)
+                    number = Integer.parseInt(args[1]);
+            } catch (NumberFormatException ignored) { }
+            door.setTimeOpen(number);
+            return;
+        }
+        if (!RunicDoors.getRunicDoors().getDoors().containsKey(args[0] + "")) {
+            Bukkit.getLogger().log(Level.INFO, "[RunicDoors] Tried to open a Non-existant door! "+args[0]);
+            return;
+        }
+        Door door =RunicDoors.getRunicDoors().getDoors().get(args[0] + "");
+        if(!RunicDoors.getRunicDoors().getOpenDoors().containsKey(door.getId()+"")) {
+            door.setOpen(true);
+            //always set open first
+            door.openForPlayer(null);
+
+        }
+        int number = door.getTimeOpenDefault();
+        try {
+            if (args[1] != null)
+                number = Integer.parseInt(args[1]);
+        } catch (NumberFormatException ignored) { }
+        door.setTimeOpen(number);
+    }
+    @Subcommand("view|v|showblocks")
+    @CommandCompletion("")
+    public void onDoorView(Player player) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        if (RunicDoors.getRunicDoors().getEditors().containsKey(player.getUniqueId())) {
+            Door door = RunicDoors.getRunicDoors().getEditors().get(player.getUniqueId());
+            DoorInteractor.showBlocks(door, Material.BLUE_STAINED_GLASS);
+        } else {
+            player.sendMessage("You don't have a door selected!");
+        }
+    }
+    @Subcommand("hide|h|showblocks")
+    @CommandCompletion("")
+    public void onDoorHide(Player player) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        if (RunicDoors.getRunicDoors().getEditors().containsKey(player.getUniqueId())) {
+            Door door = RunicDoors.getRunicDoors().getEditors().get(player.getUniqueId());
+            DoorInteractor.hideBlocks(door);
+        } else {
+            player.sendMessage("You don't have a door selected!");
+        }
+    }
+    @Subcommand("close|q|quit|closedoor|lock|doorshut|doorclose")
+    @CommandCompletion("")
+    public void onDoorClose(Player player) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        if (RunicDoors.getRunicDoors().getEditors().containsKey(player.getUniqueId())) {
+            Door door = RunicDoors.getRunicDoors().getEditors().get(player.getUniqueId());
+
+            if (RunicDoors.getRunicDoors().getOpenDoors().containsKey(door.getId() + "")) {
+                RunicDoors.getRunicDoors().getOpenDoors().remove(door.getId() + "");
+            }
+
+            door.closeForPlayer(player);
+
+        } else {
+            player.sendMessage("You don't have a door selected!");
+        }
+    }
+}
