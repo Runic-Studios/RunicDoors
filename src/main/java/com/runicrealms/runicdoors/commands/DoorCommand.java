@@ -477,7 +477,6 @@ public class DoorCommand extends co.aikar.commands.BaseCommand {
             player.sendMessage("No perms");
             return;
         }
-        player.sendMessage("this feature is under construction!");
         if(!RunicDoors.getRunicDoors().getEditors().containsKey(player.getUniqueId())){
             player.sendMessage("You don't have a door selected");
             return;

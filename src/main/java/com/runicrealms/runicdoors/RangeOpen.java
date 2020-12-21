@@ -6,6 +6,7 @@ import com.runicrealms.runicdoors.doorStuff.DoorInteractor;
 import com.runicrealms.runicdoors.utility.EfficientBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -44,7 +45,7 @@ public class RangeOpen extends BukkitRunnable {
         player.setVelocity(direction.multiply(0.2));
         //if the doors open set some blocks to prevent them passing through
         if (door.getOpen()) {
-            EfficientBlock.placeClientSideMaterial(door.getConnections(), Material.BARRIER, player);
+            EfficientBlock.placeClientSideMaterial(door.getConnections(), Material.BARRIER, player,Particle.BARRIER);
         }
         return true;
 
