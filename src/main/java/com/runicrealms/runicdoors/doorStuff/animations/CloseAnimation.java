@@ -66,6 +66,7 @@ public class CloseAnimation {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
+                        if(door.getOpen()){this.cancel();return;}
                         b.getLocation().getBlock().setType(b.getMaterial(), false);
                         b.getLocation().getBlock().setBlockData(b.getBlockData());
                         door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_STONE_BREAK, 1, 0);
@@ -82,6 +83,7 @@ public class CloseAnimation {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
+                        if(door.getOpen()){this.cancel();return;}
                         b.getLocation().getBlock().setType(b.getMaterial(), false);
                         b.getLocation().getBlock().setBlockData(b.getBlockData());
                         door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_STONE_BREAK, 1, 0);
@@ -95,6 +97,7 @@ public class CloseAnimation {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
+                        if(door.getOpen()){this.cancel();return;}
                         b.getLocation().getBlock().setType(b.getMaterial(), false);
                         b.getLocation().getBlock().setBlockData(b.getBlockData());
                     }
@@ -114,6 +117,7 @@ public class CloseAnimation {
                 new BukkitRunnable(){
                     @Override
                     public void run() {
+                        if(door.getOpen()){this.cancel();return;}
                         b.getLocation().getBlock().setType(b.getMaterial(), false);
                         b.getLocation().getBlock().setBlockData(b.getBlockData());
                     }

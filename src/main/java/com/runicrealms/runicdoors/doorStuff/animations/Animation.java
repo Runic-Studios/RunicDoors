@@ -49,6 +49,8 @@ public class Animation {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
+
+                        if(!door.getOpen()){this.cancel();return;}
                         b.getLocation().getBlock().setType(Material.AIR, false);
                         door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_STONE_BREAK, 1, 0);
                     }
@@ -64,6 +66,7 @@ public class Animation {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
+                        if(!door.getOpen()){this.cancel();return;}
                         b.getLocation().getBlock().setType(Material.AIR, false);
                         door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_STONE_BREAK, 1, 0);
                     }
@@ -77,6 +80,7 @@ public class Animation {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
+                        if(!door.getOpen()){this.cancel();return;}
                         b.getLocation().getBlock().setType(Material.FIRE, false);
                         new BukkitRunnable() {
                             @Override
