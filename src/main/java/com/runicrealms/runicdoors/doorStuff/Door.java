@@ -1,13 +1,11 @@
 package com.runicrealms.runicdoors.doorStuff;
 
 import com.runicrealms.runicdoors.RunicDoors;
-import com.runicrealms.runicdoors.doorStuff.animations.TriCallable;
+import com.runicrealms.runicdoors.doorStuff.animations.QuadCallable;
 import org.bukkit.Location;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.block.data.Directional;
 
 import java.util.ArrayList;
 
@@ -26,7 +24,12 @@ public class Door {
     private int timeOpen;
     private int timeOpenDefault;
     private String animation;
-    public Door(Location location, short id, String permission, Integer distance, ArrayList<DoorBlock> connections, Boolean open, int timeOpenDefault,String animation) {
+
+    private String closeAnimation;
+
+    private int speed;
+
+    public Door(Location location, short id, String permission, Integer distance, ArrayList<DoorBlock> connections, Boolean open, int timeOpenDefault,String animation,String closeAnimation,int speed) {
         this.location = location;
         this.id = id;
         this.permission = permission;
@@ -36,14 +39,17 @@ public class Door {
         this.timeOpen = 0;
         this.timeOpenDefault = timeOpenDefault;
         this.animation = animation;
+
+        this.closeAnimation = closeAnimation;
         //TODO fix swapped stuuff in the future
-        this.swappedConnections = connections;
+        this.swappedConnections =null; //connections;
+        this.speed = speed;
     }
 
     public void openForPlayer(Player player) {
-        TriCallable triCallable =RunicDoors.getRunicDoors().getAnimator().animations.get(this.getAnimation());
+        QuadCallable callable =RunicDoors.getRunicDoors().getAnimator().animations.get(this.getAnimation());
 
-        triCallable.apply(this.getConnections(),null,this);
+        callable.apply(this.getConnections().clone(),null,this,speed);
 
         RunicDoors.getRunicDoors().getOpenDoors().put(this.getId() + "", this);
         BukkitTask runlater = new BukkitRunnable() {
@@ -62,14 +68,9 @@ public class Door {
     }
 
     public void closeForPlayer(Player player) {
-        for (DoorBlock b : this.getConnections()) {
-            b.getLocation().getBlock().setType(b.getMaterial());
-            if (b.getBlockFace() != BlockFace.SELF) {
-                Directional directional = (Directional) b.getLocation().getBlock().getBlockData();
-                directional.setFacing(b.getBlockFace());
-                b.getLocation().getBlock().setBlockData(directional);
-            }
-        }
+        QuadCallable triCallabl =RunicDoors.getRunicDoors().getCloseAnimator().animations.get(this.getCloseAnimation());
+
+        triCallabl.apply(this.getConnections().clone(),null,this,speed);
         this.open = false;
     }
 
@@ -122,7 +123,7 @@ public class Door {
     }
 
     public String getAnimation() {
-        return animation;
+        return this.animation;
     }
 
     public void setDistance(Integer integer) {
@@ -139,5 +140,19 @@ public class Door {
 
     public void setPermission(String range) {
         this.permission = range;
+    }
+
+    public String getCloseAnimation() {return this.closeAnimation;
+    }
+
+    public void setCloseAnimation(String range) {
+        this.closeAnimation = range;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public int getAnimationSpeed() {return this.speed;
     }
 }

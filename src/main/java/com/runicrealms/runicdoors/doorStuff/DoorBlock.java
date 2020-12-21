@@ -3,15 +3,16 @@ package com.runicrealms.runicdoors.doorStuff;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 
 public class DoorBlock {
     private final Material material;
     private final Location location;
-    private final BlockFace blockFace;
-    public DoorBlock(Material material, Location location, BlockFace blockFace){
+    private final BlockData blockData;
+    public DoorBlock(Material material, Location location, BlockData blockData){
         this.material = material;
         this.location = location;
-        this.blockFace = blockFace;
+        this.blockData = blockData;
     }
 
     public Location getLocation() {
@@ -21,7 +22,7 @@ public class DoorBlock {
         return this.material;
     }
 
-    public BlockFace getBlockFace() {
-        return this.blockFace;
+    public BlockData getBlockData() {
+        return this.blockData;
     }
 }

@@ -25,7 +25,8 @@ public class ConfigSave {
                 config.set("Doors" + "." + node.getId() + ".distance", node.getDistance());
                 config.set("Doors" + "." + node.getId() + ".permission", node.getPermission());
                 config.set("Doors" + "." + node.getId() + ".animation", node.getAnimation());
-
+                config.set("Doors" + "." + node.getId() + ".closeanimation", node.getCloseAnimation());
+                config.set("Doors" + "." + node.getId() + ".animationspeed", node.getAnimationSpeed());
                 config.set("Doors" + "." + node.getId() + ".timeOpen", node.getTimeOpenDefault());
                 int i = 0;
                 config.set("Doors." + node.getId() + ".blocks",null);
@@ -37,7 +38,7 @@ public class ConfigSave {
 
                     config.set("Doors." + node.getId() + ".blocks."+i+".location.z",node.getConnections().get(i-1).getLocation().getZ());
                     config.set("Doors." + node.getId() + ".blocks."+i+".material",node.getConnections().get(i-1).getMaterial().toString());
-                    config.set("Doors." + node.getId() + ".blocks."+i+".face",node.getConnections().get(i-1).getBlockFace().toString());
+                    config.set("Doors." + node.getId() + ".blocks."+i+".data",node.getConnections().get(i-1).getBlockData().getAsString());
                 }
 
                 RunicDoors.getRunicDoors().saveDoors();

@@ -46,9 +46,9 @@ public class ConfigLoad {
                                         Double.parseDouble(nodeBlockSection.getString(block+".location.x")),
                                         Double.parseDouble(nodeBlockSection.getString(block+".location.y")),
                                         Double.parseDouble(nodeBlockSection.getString(block+".location.z")));
-                                BlockFace rotation =BlockFace.valueOf(nodeBlockSection.getString(block+".face"));
+                                BlockData data =Bukkit.createBlockData(nodeBlockSection.getString(block+".data"));
 
-                                blocks.add(new DoorBlock(material,location,rotation));
+                                blocks.add(new DoorBlock(material,location,data));
                             }
                             Location loc = new Location(
                                     Bukkit.getWorld(nodeSubSection.getString("location.world")),
@@ -60,7 +60,7 @@ public class ConfigLoad {
                                     (short) Integer.parseInt(key),
                                     nodeSubSection.getString("permission"),
                                     nodeSubSection.getInt("distance"),
-                                    blocks,false,nodeSubSection.getInt("timeOpen"),nodeSubSection.getString("animation"));
+                                    blocks,false,nodeSubSection.getInt("timeOpen"),nodeSubSection.getString("animation"),nodeSubSection.getString("closeanimation"),nodeSubSection.getInt("animationspeed"));
                             //NodeHandler.placeNodeInGrid(node);//puts nodes in one at a time
                             nodes.put(key, node);
                             Bukkit.broadcastMessage(node.getConnections().size()+"");

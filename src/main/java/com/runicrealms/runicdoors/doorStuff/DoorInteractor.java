@@ -1,11 +1,13 @@
 package com.runicrealms.runicdoors.doorStuff;
 
 import com.runicrealms.runicdoors.RunicDoors;
+import com.runicrealms.runicdoors.utility.EfficientBlock;
 import com.runicrealms.runicdoors.utility.Messages;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
-import org.bukkit.material.Directional;
 
 import java.util.Random;
 import java.util.Set;
@@ -34,18 +36,11 @@ public class DoorInteractor {
         return closestNode;
     }
     public static void showBlocks(Door door, Material material){
-        for(DoorBlock b:door.getConnections()){
-            b.getLocation().getBlock().setType(material);
-        }
+        EfficientBlock.placeMaterial(door.getConnections(),material);
     }
     public static void hideBlocks(Door door){
-        for(DoorBlock b:door.getConnections()){
-            b.getLocation().getBlock().setType(b.getMaterial());
-            if (b.getLocation().getBlock() instanceof Directional) {
-                Directional directional = (Directional) b.getLocation().getBlock();
-                directional.setFacingDirection(b.getBlockFace());
-            }
-        }
+        EfficientBlock.place(door.getConnections());
+        door.setOpen(false);
     }
     public static short newId() {
         int id = new Random().nextInt(10000);
