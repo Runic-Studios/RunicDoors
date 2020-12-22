@@ -89,11 +89,12 @@ public class Animation {
 
                             }
                         }.runTaskLater(RunicDoors.getRunicDoors(), 1);
-                        door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_REDSTONE_TORCH_BURNOUT, 1, 0);
                     }
                 }.runTaskLater(RunicDoors.getRunicDoors(), i*time);
                 i++;
             }
+
+            door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_REDSTONE_TORCH_BURNOUT, 1, 0);
         });
 
         animations.put("PARTICLE", (doorBlocks, doorBlocks2, door,time) -> {
