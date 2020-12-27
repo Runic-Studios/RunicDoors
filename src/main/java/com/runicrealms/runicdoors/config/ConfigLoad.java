@@ -67,7 +67,7 @@ public class ConfigLoad {
                         }
 
 
-                        DoorHandler.placeDoorsInGrid(nodes);
+                        RunicDoors.getRunicDoors().getDoorHandler().placeDoorsInGrid(nodes);
                         RunicDoors.getRunicDoors().setNodes(nodes);
                         Bukkit.getLogger().log(Level.INFO, "[RunicDoors] Doors have been loaded!");
                     }});

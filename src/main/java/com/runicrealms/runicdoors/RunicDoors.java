@@ -5,6 +5,7 @@ import com.runicrealms.runicdoors.commands.DoorCommand;
 import com.runicrealms.runicdoors.config.ConfigLoad;
 import com.runicrealms.runicdoors.config.Loader;
 import com.runicrealms.runicdoors.doorStuff.Door;
+import com.runicrealms.runicdoors.doorStuff.DoorHandler;
 import com.runicrealms.runicdoors.doorStuff.RegionWrapper;
 import com.runicrealms.runicdoors.doorStuff.animations.Animation;
 import com.runicrealms.runicdoors.doorStuff.animations.CloseAnimation;
@@ -23,6 +24,7 @@ import java.util.*;
 
 public final class RunicDoors extends JavaPlugin {
     private static RunicDoors runicDoors;
+    private DoorHandler doorHandler;
     private Map<String, Door> doors = new HashMap<>();
 
     private Map<UUID, RegionWrapper> regionTools = new HashMap<>();
@@ -62,6 +64,7 @@ public final class RunicDoors extends JavaPlugin {
         runicDoors = this;
         animator = new Animation();
         closeAnimator = new CloseAnimation();
+        doorHandler = new DoorHandler();
         doorConfig = new File(getDataFolder(), "DoorStuff.yml");
         doorFileConfig = YamlConfiguration.loadConfiguration(doorConfig);
         ConfigLoad.loadDoors(doorFileConfig);
@@ -125,5 +128,9 @@ public final class RunicDoors extends JavaPlugin {
 
     public CloseAnimation getCloseAnimator() {
         return closeAnimator;
+    }
+
+    public DoorHandler getDoorHandler() {
+        return doorHandler;
     }
 }

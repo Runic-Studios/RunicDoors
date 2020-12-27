@@ -43,7 +43,7 @@ public class DoorCommand extends co.aikar.commands.BaseCommand {
         short id = DoorInteractor.newId();
         Door door = new Door(player.getLocation(), id, "none", 5, new ArrayList<>(), false, 3, "BASIC","BASIC",1);
         ConfigSave.saveNode(door, RunicDoors.getRunicDoors().getDoorFileConfig());
-        DoorHandler.placeDoorInGrid(door);
+        RunicDoors.getRunicDoors().getDoorHandler().placeDoorInGrid(door);
         RunicDoors.getRunicDoors().getDoors().put(door.getId() + "", door);
         player.sendMessage("Its id is " + id);
         RunicDoors.getRunicDoors().getEditors().put(player.getUniqueId(), door);
@@ -127,7 +127,7 @@ public class DoorCommand extends co.aikar.commands.BaseCommand {
             return;
         }
         int i = 0;
-        for (Door door : DoorHandler.getDoorGrid().getNearbyNodes(player.getLocation())) {
+        for (Door door : RunicDoors.getRunicDoors().getDoorHandler().getDoorGrid().getNearbyNodes(player.getLocation())) {
             i++;
             Particles.drawPinPoint(door.getLocation(), Color.RED, Color.WHITE);
         }
@@ -144,7 +144,7 @@ public class DoorCommand extends co.aikar.commands.BaseCommand {
         if (RunicDoors.getRunicDoors().getEditors().containsKey(player.getUniqueId())) {
             player.sendMessage("Deleted ");
             Door door = RunicDoors.getRunicDoors().getEditors().get(player.getUniqueId());
-            DoorHandler.getDoorGrid().removeElementInGrid(DoorHandler.getDoorGrid().getGridLocationFromLocation(door.getLocation()), door);
+            RunicDoors.getRunicDoors().getDoorHandler().getDoorGrid().removeElementInGrid(RunicDoors.getRunicDoors().getDoorHandler().getDoorGrid().getGridLocationFromLocation(door.getLocation()), door);
             DoorDelete.deleteNode(door.getId() + "", RunicDoors.getRunicDoors().getDoorFileConfig());
             RunicDoors.getRunicDoors().getDoors().remove(door.getId() + "");
             RunicDoors.getRunicDoors().getEditors().remove(player.getUniqueId());
