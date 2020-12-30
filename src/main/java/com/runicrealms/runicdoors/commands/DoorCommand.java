@@ -9,23 +9,14 @@ import com.runicrealms.runicdoors.config.ConfigSave;
 import com.runicrealms.runicdoors.config.DoorDelete;
 import com.runicrealms.runicdoors.doorStuff.Door;
 import com.runicrealms.runicdoors.doorStuff.DoorBlock;
-import com.runicrealms.runicdoors.doorStuff.DoorHandler;
 import com.runicrealms.runicdoors.doorStuff.DoorInteractor;
-import com.runicrealms.runicdoors.grid.GridLocation;
-import com.runicrealms.runicdoors.grid.NodeGrid;
 import com.runicrealms.runicdoors.utility.ItemUtil;
 import com.runicrealms.runicdoors.utility.LocationUtil;
 import com.runicrealms.runicdoors.utility.Particles;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.command.CommandExecutor;
+import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -295,6 +286,7 @@ public class DoorCommand extends co.aikar.commands.BaseCommand {
             player.sendMessage("You don't have a door selected!");
         }
     }
+
 
     @Subcommand("open|o|opendoor|unlock|dooropen|opensesame")
     @CommandCompletion("")

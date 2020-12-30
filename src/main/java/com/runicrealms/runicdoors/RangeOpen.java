@@ -42,7 +42,7 @@ public class RangeOpen extends BukkitRunnable {
         if (player.hasPermission(door.getPermission()) || door.getPermission().equals("none")) return false;
         //fling player away
         Vector direction = player.getLocation().subtract(door.getLocation()).toVector();
-        player.setVelocity(direction.multiply(0.2));
+        player.setVelocity(direction.multiply(0.5));
         //if the doors open set some blocks to prevent them passing through
         if (door.getOpen()) {
             EfficientBlock.placeClientSideMaterial(door.getConnections(), Material.BARRIER, player,Particle.BARRIER);

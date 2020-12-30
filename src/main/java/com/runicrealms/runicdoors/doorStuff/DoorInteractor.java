@@ -43,7 +43,7 @@ public class DoorInteractor {
         door.setOpen(false);
     }
     public static short newId() {
-        int id = new Random().nextInt(10000);
+        int id = new Random().nextInt(32766);
         if (RunicDoors.getRunicDoors().getDoorFileConfig().contains("Nodes." + id) || id == 0) {
             return newId();
         }

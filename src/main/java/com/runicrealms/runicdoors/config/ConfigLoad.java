@@ -4,10 +4,7 @@ import com.runicrealms.runicdoors.RunicDoors;
 import com.runicrealms.runicdoors.doorStuff.Door;
 import com.runicrealms.runicdoors.doorStuff.DoorBlock;
 import com.runicrealms.runicdoors.doorStuff.DoorHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Rotation;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
@@ -31,6 +28,7 @@ public class ConfigLoad {
                         }
                         ConfigurationSection nodeSection = config.getConfigurationSection("Doors");
                         for (String key : nodeSection.getKeys(false)) {
+                            try{
                             ConfigurationSection nodeSubSection = config.getConfigurationSection("Doors." + key);
                             ConfigurationSection nodeBlockSection = config.getConfigurationSection("Doors." + key+".blocks");
                             ArrayList<DoorBlock> blocks= new ArrayList<>();
@@ -64,6 +62,10 @@ public class ConfigLoad {
                             //NodeHandler.placeNodeInGrid(node);//puts nodes in one at a time
                             nodes.put(key, node);
                             Bukkit.broadcastMessage(node.getConnections().size()+"");
+                            } catch (IllegalArgumentException e) {
+                                e.printStackTrace();
+                                Bukkit.broadcastMessage("Error loading a door!");
+                            }
                         }
 
 

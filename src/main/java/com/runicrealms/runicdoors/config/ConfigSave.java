@@ -19,9 +19,9 @@ public class ConfigSave {
             public void run() {
 
                 config.set("Doors"+ "." + node.getId() + ".location.world", node.getLocation().getWorld().getName());
-                config.set("Doors" + "." + node.getId() + ".location.x", node.getLocation().getBlockX());
-                config.set("Doors" + "." + node.getId() + ".location.y", node.getLocation().getBlockY());
-                config.set("Doors" + "." + node.getId() + ".location.z", node.getLocation().getBlockZ());
+                config.set("Doors" + "." + node.getId() + ".location.x", node.getLocation().getX());
+                config.set("Doors" + "." + node.getId() + ".location.y", node.getLocation().getY());
+                config.set("Doors" + "." + node.getId() + ".location.z", node.getLocation().getZ());
                 config.set("Doors" + "." + node.getId() + ".distance", node.getDistance());
                 config.set("Doors" + "." + node.getId() + ".permission", node.getPermission());
                 config.set("Doors" + "." + node.getId() + ".animation", node.getAnimation());

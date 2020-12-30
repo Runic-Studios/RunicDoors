@@ -3,6 +3,7 @@ package com.runicrealms.runicdoors.doorStuff;
 import com.runicrealms.runicdoors.RunicDoors;
 import com.runicrealms.runicdoors.doorStuff.animations.QuadCallable;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -28,6 +29,7 @@ public class Door {
     private String closeAnimation;
 
     private int speed;
+    private String sound;
 
     public Door(Location location, short id, String permission, Integer distance, ArrayList<DoorBlock> connections, Boolean open, int timeOpenDefault,String animation,String closeAnimation,int speed) {
         this.location = location;
@@ -39,6 +41,7 @@ public class Door {
         this.timeOpen = 0;
         this.timeOpenDefault = timeOpenDefault;
         this.animation = animation;
+        this.sound = sound;
 
         this.closeAnimation = closeAnimation;
         //TODO fix swapped stuuff in the future
@@ -155,4 +158,5 @@ public class Door {
 
     public int getAnimationSpeed() {return this.speed;
     }
+
 }

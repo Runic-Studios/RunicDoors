@@ -105,6 +105,38 @@ public class Animation {
             door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_STONE_BREAK, 1, 0);
         });
 
+        animations.put("FLAME", (doorBlocks, doorBlocks2, door,time) -> {
+            for (DoorBlock b : doorBlocks) {
+                b.getLocation().getBlock().setType(Material.AIR, false);
+                b.getLocation().getWorld().spawnParticle(Particle.FLAME, b.getLocation().clone().add(0.5, 0.5, 0.5), 5, 0.1, 0.1, 0.1, 0.1);
+            }
+            door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_LAVA_POP, 1, 0);
+        });
+
+        animations.put("GHAST", (doorBlocks, doorBlocks2, door,time) -> {
+            for (DoorBlock b : doorBlocks) {
+                b.getLocation().getBlock().setType(Material.AIR, false);
+                b.getLocation().getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().clone().add(0.5, 0.5, 0.5), 5, 0.1, 0.1, 0.1, 0.1, Bukkit.createBlockData(b.getMaterial()));
+            }
+            door.getLocation().getWorld().playSound(door.getLocation(), Sound.ENTITY_GHAST_SCREAM, 1, 0);
+        });
+
+        animations.put("ANVIL", (doorBlocks, doorBlocks2, door,time) -> {
+            for (DoorBlock b : doorBlocks) {
+                b.getLocation().getBlock().setType(Material.AIR, false);
+                b.getLocation().getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().clone().add(0.5, 0.5, 0.5), 5, 0.1, 0.1, 0.1, 0.1, Bukkit.createBlockData(b.getMaterial()));
+            }
+            door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_ANVIL_LAND, 1, 0);
+        });
+
+        animations.put("WITHER", (doorBlocks, doorBlocks2, door,time) -> {
+            for (DoorBlock b : doorBlocks) {
+                b.getLocation().getBlock().setType(Material.AIR, false);
+                b.getLocation().getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().clone().add(0.5, 0.5, 0.5), 5, 0.1, 0.1, 0.1, 0.1, Bukkit.createBlockData(b.getMaterial()));
+            }
+            door.getLocation().getWorld().playSound(door.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1, 0);
+        });
+
         animations.put("SWAP", (doorBlocks, doorBlocks2, door,time) -> {
             for (DoorBlock b : doorBlocks) {
                 b.getLocation().getBlock().setType(Material.AIR, false);
