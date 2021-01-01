@@ -9,6 +9,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class Door {
     private String nodeName;
@@ -29,9 +31,9 @@ public class Door {
     private String closeAnimation;
 
     private int speed;
-    private String sound;
-
-    public Door(Location location, short id, String permission, Integer distance, ArrayList<DoorBlock> connections, Boolean open, int timeOpenDefault,String animation,String closeAnimation,int speed) {
+    private String denyMessage;
+    private HashMap<UUID,Long> messageCooldown = new HashMap<>();
+    public Door(Location location, short id, String permission, Integer distance, ArrayList<DoorBlock> connections, Boolean open, int timeOpenDefault,String animation,String closeAnimation,int speed,String denyMessage) {
         this.location = location;
         this.id = id;
         this.permission = permission;
@@ -41,7 +43,7 @@ public class Door {
         this.timeOpen = 0;
         this.timeOpenDefault = timeOpenDefault;
         this.animation = animation;
-        this.sound = sound;
+        this.denyMessage = denyMessage;
 
         this.closeAnimation = closeAnimation;
         //TODO fix swapped stuuff in the future
@@ -159,4 +161,19 @@ public class Door {
     public int getAnimationSpeed() {return this.speed;
     }
 
+    public HashMap<UUID, Long> getMessageCooldown() {
+        return messageCooldown;
+    }
+
+    public void setMessageCooldown(HashMap<UUID, Long> messageCooldown) {
+        this.messageCooldown = messageCooldown;
+    }
+
+    public String getDenyMessage() {
+        return denyMessage;
+    }
+
+    public void setDenyMessage(String denyMessage) {
+        this.denyMessage = denyMessage;
+    }
 }

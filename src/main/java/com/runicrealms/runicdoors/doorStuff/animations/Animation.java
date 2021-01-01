@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.block.data.AnaloguePowerable;
 import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +39,17 @@ public class Animation {
             for (DoorBlock b : door.getConnections()) {
                 b.getLocation().getBlock().setType(b.getMaterial());
                 if (b.getBlockData() != null) {
-                    b.getLocation().getBlock().setBlockData(b.getBlockData());
+                    b.getLocation().getBlock().setBlockData(b.getBlockData(),false);
+                }
+            }
+        });
+        animations.put("POWER", (doorBlocks, doorBlocks2, door,time) -> {
+
+            for (DoorBlock b : doorBlocks) {
+                if(b.getLocation().getBlock() instanceof AnaloguePowerable) {
+                   AnaloguePowerable powerable= (AnaloguePowerable) b.getLocation().getBlock().getBlockData();
+                   powerable.setPower(1);
+                   b.getLocation().getBlock().setBlockData(powerable);
                 }
             }
         });

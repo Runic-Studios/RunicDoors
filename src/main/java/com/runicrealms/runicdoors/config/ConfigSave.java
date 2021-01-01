@@ -28,6 +28,7 @@ public class ConfigSave {
                 config.set("Doors" + "." + node.getId() + ".closeanimation", node.getCloseAnimation());
                 config.set("Doors" + "." + node.getId() + ".animationspeed", node.getAnimationSpeed());
                 config.set("Doors" + "." + node.getId() + ".timeOpen", node.getTimeOpenDefault());
+                config.set("Doors" + "." + node.getId() + ".denymessage", node.getDenyMessage());
                 int i = 0;
                 config.set("Doors." + node.getId() + ".blocks",null);
                 for(DoorBlock doorBlock:node.getConnections()){

@@ -32,7 +32,7 @@ public class DoorCommand extends co.aikar.commands.BaseCommand {
         }
         player.sendMessage("Creating a door for you!");
         short id = DoorInteractor.newId();
-        Door door = new Door(player.getLocation(), id, "none", 5, new ArrayList<>(), false, 3, "BASIC","BASIC",1);
+        Door door = new Door(player.getLocation(), id, "none", 5, new ArrayList<>(), false, 3, "BASIC","BASIC",1,"none");
         ConfigSave.saveNode(door, RunicDoors.getRunicDoors().getDoorFileConfig());
         RunicDoors.getRunicDoors().getDoorHandler().placeDoorInGrid(door);
         RunicDoors.getRunicDoors().getDoors().put(door.getId() + "", door);
@@ -287,6 +287,24 @@ public class DoorCommand extends co.aikar.commands.BaseCommand {
         }
     }
 
+    @Subcommand("denymessage|deny")
+    @CommandCompletion("none|&4You feel weak")
+    public void onDoorDenyMessage(Player player, String range) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        if (RunicDoors.getRunicDoors().getEditors().containsKey(player.getUniqueId())) {
+            Door door = RunicDoors.getRunicDoors().getEditors().get(player.getUniqueId());
+
+            player.sendMessage("New message of " + range);
+            door.setDenyMessage(range);
+            ConfigSave.saveNode(door, RunicDoors.getRunicDoors().getDoorFileConfig());
+            Particles.drawPinPoint(door.getLocation(), Color.RED, Color.WHITE);
+        } else {
+            player.sendMessage("You don't have a door selected!");
+        }
+    }
 
     @Subcommand("open|o|opendoor|unlock|dooropen|opensesame")
     @CommandCompletion("")

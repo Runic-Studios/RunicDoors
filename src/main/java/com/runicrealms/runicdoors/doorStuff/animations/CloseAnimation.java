@@ -7,6 +7,7 @@ import com.runicrealms.runicdoors.utility.EfficientBlock;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.block.data.AnaloguePowerable;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -45,6 +46,16 @@ public class CloseAnimation {
                 b.getLocation().getBlock().setType(Material.AIR, false);
             }
         });
+        animations.put("REMOVEPOWER", (doorBlocks, doorBlocks2, door,time) -> {
+
+            for (DoorBlock b : doorBlocks) {
+                if(b.getLocation().getBlock() instanceof AnaloguePowerable) {
+                    AnaloguePowerable powerable= (AnaloguePowerable) b.getLocation().getBlock().getBlockData();
+                    powerable.setPower(0);
+                    b.getLocation().getBlock().setBlockData(powerable,false);
+                }
+            }
+        });
         animations.put("EXPLODE", (doorBlocks, doorBlocks2, door,time) -> {
             for (DoorBlock b : doorBlocks) {
                 new BukkitRunnable() {
@@ -59,6 +70,7 @@ public class CloseAnimation {
             door.getLocation().getWorld().playSound(door.getLocation(), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 1, 0);
 
         });
+
         animations.put("FADE", (doorBlocks, doorBlocks2, door,time) -> {
             int i = 1;
             for (DoorBlock b : doorBlocks) {

@@ -58,7 +58,7 @@ public class ConfigLoad {
                                     (short) Integer.parseInt(key),
                                     nodeSubSection.getString("permission"),
                                     nodeSubSection.getInt("distance"),
-                                    blocks,false,nodeSubSection.getInt("timeOpen"),nodeSubSection.getString("animation"),nodeSubSection.getString("closeanimation"),nodeSubSection.getInt("animationspeed"));
+                                    blocks,false,nodeSubSection.getInt("timeOpen"),nodeSubSection.getString("animation"),nodeSubSection.getString("closeanimation"),nodeSubSection.getInt("animationspeed"),nodeSubSection.getString("denymessage"));
                             //NodeHandler.placeNodeInGrid(node);//puts nodes in one at a time
                             nodes.put(key, node);
                             Bukkit.broadcastMessage(node.getConnections().size()+"");

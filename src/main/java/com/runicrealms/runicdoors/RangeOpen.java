@@ -4,6 +4,7 @@ import com.runicrealms.runicdoors.doorStuff.Door;
 import com.runicrealms.runicdoors.doorStuff.DoorHandler;
 import com.runicrealms.runicdoors.doorStuff.DoorInteractor;
 import com.runicrealms.runicdoors.utility.EfficientBlock;
+import com.runicrealms.runicdoors.utility.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -42,11 +43,29 @@ public class RangeOpen extends BukkitRunnable {
         if (player.hasPermission(door.getPermission()) || door.getPermission().equals("none")) return false;
         //fling player away
         Vector direction = player.getLocation().subtract(door.getLocation()).toVector();
-        player.setVelocity(direction.multiply(0.5));
+        player.setVelocity(direction.multiply(0.3));
         //if the doors open set some blocks to prevent them passing through
         if (door.getOpen()) {
             EfficientBlock.placeClientSideMaterial(door.getConnections(), Material.BARRIER, player,Particle.BARRIER);
         }
+
+        //don't do all the calculating if there's no message to display
+        if(door.getDenyMessage().equals("none"))return true;
+        //check if players are in cooldown
+        //if not then add them
+        if (!door.getMessageCooldown().containsKey(player.getUniqueId())){
+            door.getMessageCooldown().put(player.getUniqueId(), System.currentTimeMillis());
+            player.sendMessage(StringUtils.colorCode(door.getDenyMessage()));
+            return true;}
+        //has a player been away from the door for 5 seconds?
+        if (door.getMessageCooldown().get(player.getUniqueId()) + 5000 < System.currentTimeMillis()) {
+            door.getMessageCooldown().put(player.getUniqueId(), System.currentTimeMillis());
+            //don't display message
+            return true;
+        }
+        //display message if a player has been away from the door for over 5 seconds
+        player.sendMessage(StringUtils.colorCode(door.getDenyMessage()));
+
         return true;
 
 
