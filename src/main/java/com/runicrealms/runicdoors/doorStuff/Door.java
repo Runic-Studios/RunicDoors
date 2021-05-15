@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class Door {
+
+
+    private int knockback= 3;
     private String nodeName;
     private Location location;
     private String permission;
@@ -33,10 +36,10 @@ public class Door {
     private int speed;
     private String denyMessage;
     private HashMap<UUID,Long> messageCooldown = new HashMap<>();
-    public Door(Location location, short id, String permission, Integer distance, ArrayList<DoorBlock> connections, Boolean open, int timeOpenDefault,String animation,String closeAnimation,int speed,String denyMessage) {
+    public Door(Location location, short id, String permission, Integer distance, ArrayList<DoorBlock> connections, Boolean open, int timeOpenDefault,String animation,String closeAnimation,int speed,String denyMessage,int knockback) {
         this.location = location;
-        this.id = id;
         this.permission = permission;
+        this.id = id;
         this.distance = distance;
         this.connections = connections;
         this.open = open;
@@ -49,6 +52,25 @@ public class Door {
         //TODO fix swapped stuuff in the future
         this.swappedConnections =null; //connections;
         this.speed = speed;
+    this.knockback = knockback;
+    }
+    public Door(Location location, short id, String permission, Integer distance, ArrayList<DoorBlock> connections, Boolean open, int timeOpenDefault,String animation,String closeAnimation,int speed,String denyMessage) {
+        this.location = location;
+        this.permission = permission;
+        this.id = id;
+        this.distance = distance;
+        this.connections = connections;
+        this.open = open;
+        this.timeOpen = 0;
+        this.timeOpenDefault = timeOpenDefault;
+        this.animation = animation;
+        this.denyMessage = denyMessage;
+
+        this.closeAnimation = closeAnimation;
+        //TODO fix swapped stuuff in the future
+        this.swappedConnections =null; //connections;
+        this.speed = speed;
+        this.knockback = 3;
     }
 
     public void openForPlayer(Player player) {
@@ -175,5 +197,13 @@ public class Door {
 
     public void setDenyMessage(String denyMessage) {
         this.denyMessage = denyMessage;
+    }
+
+    public int getKnockback() {
+        return knockback;
+    }
+
+    public void setKnockback(int knockback) {
+        this.knockback = knockback;
     }
 }

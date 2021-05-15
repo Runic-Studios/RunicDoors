@@ -23,6 +23,7 @@ public class ConfigSave {
                 config.set("Doors" + "." + node.getId() + ".location.y", node.getLocation().getY());
                 config.set("Doors" + "." + node.getId() + ".location.z", node.getLocation().getZ());
                 config.set("Doors" + "." + node.getId() + ".distance", node.getDistance());
+                config.set("Doors" + "." + node.getId() + ".knockback", node.getKnockback());
                 config.set("Doors" + "." + node.getId() + ".permission", node.getPermission());
                 config.set("Doors" + "." + node.getId() + ".animation", node.getAnimation());
                 config.set("Doors" + "." + node.getId() + ".closeanimation", node.getCloseAnimation());

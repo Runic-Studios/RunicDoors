@@ -42,7 +42,15 @@ public class DoorCommand extends co.aikar.commands.BaseCommand {
         Particles.drawPinPoint(door.getLocation(), Color.RED, Color.WHITE);
     }
 
-
+    @Subcommand("list|l")
+    @CommandCompletion("")
+    public void onDoorList(Player player) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        player.sendMessage(RunicDoors.getRunicDoors().getDoors().size()+ " Doors on the server");
+    }
     @Subcommand("edit|e|disable|turnoffediting|editoff")
     @CommandCompletion("")
     public void onDoorEdit(Player player) {
@@ -189,6 +197,32 @@ public class DoorCommand extends co.aikar.commands.BaseCommand {
 
             player.sendMessage("New speed of " + number);
             door.setSpeed(number);
+            ConfigSave.saveNode(door, RunicDoors.getRunicDoors().getDoorFileConfig());
+            Particles.drawPinPoint(door.getLocation(), Color.RED, Color.WHITE);
+        } else {
+            player.sendMessage("You don't have a door selected!");
+        }
+    }
+
+    @Subcommand("knockback|kick|throwdistance")
+    @CommandCompletion("1|2|3|4|5")
+    public void onDoorKnockback(Player player, String range) {
+        if (!player.isOp()) {
+            player.sendMessage("No perms");
+            return;
+        }
+        if (RunicDoors.getRunicDoors().getEditors().containsKey(player.getUniqueId())) {
+            Door door = RunicDoors.getRunicDoors().getEditors().get(player.getUniqueId());
+            int number = 1;
+            try {
+                if (range != null)
+                    number = Integer.parseInt(range);
+            } catch (NumberFormatException e) {
+                number = 3;
+            }
+
+            player.sendMessage("New knock back of " + number);
+            door.setKnockback(number);
             ConfigSave.saveNode(door, RunicDoors.getRunicDoors().getDoorFileConfig());
             Particles.drawPinPoint(door.getLocation(), Color.RED, Color.WHITE);
         } else {

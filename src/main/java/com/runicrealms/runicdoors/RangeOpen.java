@@ -43,13 +43,14 @@ public class RangeOpen extends BukkitRunnable {
         if (player.hasPermission(door.getPermission()) || door.getPermission().equals("none")) return false;
         //fling player away
         Vector direction = player.getLocation().subtract(door.getLocation()).toVector();
-        player.setVelocity(direction.multiply(0.3));
+        player.setVelocity(direction.multiply((float)0.1*door.getKnockback()));
         //if the doors open set some blocks to prevent them passing through
         if (door.getOpen()) {
             EfficientBlock.placeClientSideMaterial(door.getConnections(), Material.BARRIER, player,Particle.BARRIER);
         }
 
         //don't do all the calculating if there's no message to display
+        if(door.getDenyMessage() ==null)return true;
         if(door.getDenyMessage().equals("none"))return true;
         //check if players are in cooldown
         //if not then add them

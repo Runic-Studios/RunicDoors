@@ -53,12 +53,16 @@ public class ConfigLoad {
                                     Double.parseDouble(nodeSubSection.getString("location.x")),
                                     Double.parseDouble(nodeSubSection.getString("location.y")),
                                     Double.parseDouble(nodeSubSection.getString("location.z")));
+                            int knockback = 3;
+                            if(nodeSubSection.contains("knockback")){
+                                knockback = nodeSubSection.getInt("knockback");
+                            }
                             Door node = new Door(
                                     loc,
                                     (short) Integer.parseInt(key),
                                     nodeSubSection.getString("permission"),
                                     nodeSubSection.getInt("distance"),
-                                    blocks,false,nodeSubSection.getInt("timeOpen"),nodeSubSection.getString("animation"),nodeSubSection.getString("closeanimation"),nodeSubSection.getInt("animationspeed"),nodeSubSection.getString("denymessage"));
+                                    blocks,false,nodeSubSection.getInt("timeOpen"),nodeSubSection.getString("animation"),nodeSubSection.getString("closeanimation"),nodeSubSection.getInt("animationspeed"),nodeSubSection.getString("denymessage"),knockback);
                             //NodeHandler.placeNodeInGrid(node);//puts nodes in one at a time
                             nodes.put(key, node);
                             Bukkit.broadcastMessage(node.getConnections().size()+"");
