@@ -1,6 +1,6 @@
 package com.runicrealms.runicdoors;
 
-import co.aikar.commands.PaperCommandManager;
+import com.runicrealms.libs.acf.PaperCommandManager;
 import com.runicrealms.runicdoors.commands.DoorCommand;
 import com.runicrealms.runicdoors.config.ConfigLoad;
 import com.runicrealms.runicdoors.config.Loader;
@@ -24,15 +24,36 @@ import java.util.*;
 
 public final class RunicDoors extends JavaPlugin {
     private static RunicDoors runicDoors;
+    private final Map<UUID, Door> editors = new HashMap<>();
+    private final Set<String> viewing = new HashSet<>();
+    private final Map<UUID, RegionWrapper> regionTools = new HashMap<>();
+    private final Map<String, Door> openDoors = new HashMap<>();
+    public File doorConfig;
+    public FileConfiguration doorFileConfig;
     private DoorHandler doorHandler;
     private Map<String, Door> doors = new HashMap<>();
-
-    private Map<UUID, RegionWrapper> regionTools = new HashMap<>();
-    private Map<String, Door> openDoors = new HashMap<>();
-    public  File doorConfig;
     private Animation animator;
-
     private CloseAnimation closeAnimator;
+    private PaperCommandManager manager;
+
+    public static RunicDoors getRunicDoors() {
+        return runicDoors;
+    }
+
+    public static void registerEvents(org.bukkit.plugin.Plugin plugin, Listener... listeners) {
+        for (Listener listener : listeners) {
+            Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
+        }
+    }
+
+    public Animation getAnimator() {
+        return this.animator;
+    }
+
+    public CloseAnimation getCloseAnimator() {
+        return closeAnimator;
+    }
+
     public File getDoorConfig() {
         return doorConfig;
     }
@@ -41,16 +62,38 @@ public final class RunicDoors extends JavaPlugin {
         return doorFileConfig;
     }
 
-    public  FileConfiguration doorFileConfig;
-    private PaperCommandManager manager;
-    private Map<UUID,Door> editors = new HashMap<>();
+    public DoorHandler getDoorHandler() {
+        return doorHandler;
+    }
+
+    public Map<String, Door> getDoors() {
+        return doors;
+    }
+
+    public Map<UUID, Door> getEditors() {
+        return editors;
+    }
+
+    public PaperCommandManager getManager() {
+        return manager;
+    }
+
+    public Map<String, Door> getOpenDoors() {
+        return openDoors;
+    }
+
+    public Map<UUID, RegionWrapper> getRegionTools() {
+        return regionTools;
+    }
 
     public Set<String> getViewing() {
         return viewing;
     }
-    private Set<String> viewing= new HashSet<>();
-    public PaperCommandManager getManager() {
-        return manager;
+
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+        saveDoors();
     }
 
     /*
@@ -69,33 +112,18 @@ public final class RunicDoors extends JavaPlugin {
         doorFileConfig = YamlConfiguration.loadConfiguration(doorConfig);
         ConfigLoad.loadDoors(doorFileConfig);
         saveDoors();
-        manager =  new PaperCommandManager(this);
+        manager = new PaperCommandManager(this);
         manager.registerCommand(new DoorCommand());
-        registerEvents(this,new BlockPlaceListener(),new BlockBreakListener(),new PlayerInteractListener());
-        BukkitTask doorrange = new RangeOpen().runTaskTimer(this,10,5);
+        registerEvents(this, new BlockPlaceListener(), new BlockBreakListener(), new PlayerInteractListener());
+        BukkitTask doorrange = new RangeOpen().runTaskTimer(this, 10, 5);
         //gives 5 seconds to load all doors from config, then this runs and closes them 1 every tick!
-        BukkitTask loaddoors = new Loader().runTaskLater(this,100);
+        BukkitTask loaddoors = new Loader().runTaskLater(this, 100);
 
         animator.addAnimations();
         closeAnimator.addAnimations();
 
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-        saveDoors();
-    }
-
-    public void setNodes(Map<String, Door> doors) {
-        this.doors = doors;
-    }
-    public static RunicDoors getRunicDoors() {
-        return runicDoors;
-    }
-    public Map<String, Door> getDoors() {
-        return doors;
-    }
     public void saveDoors() {
         try {
             doorFileConfig.options().copyDefaults(true);
@@ -104,33 +132,8 @@ public final class RunicDoors extends JavaPlugin {
             e.printStackTrace();
         }
     }
-    public static void registerEvents(org.bukkit.plugin.Plugin plugin, Listener... listeners) {
-        for (Listener listener : listeners) {
-            Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
-        }
-    }
 
-    public Map<UUID, Door> getEditors() {
-        return editors;
-    }
-
-    public Map<String, Door> getOpenDoors() {
-        return openDoors;
-    }
-
-    public Animation getAnimator() {
-        return this.animator;
-    }
-
-    public Map<UUID, RegionWrapper> getRegionTools() {
-        return regionTools;
-    }
-
-    public CloseAnimation getCloseAnimator() {
-        return closeAnimator;
-    }
-
-    public DoorHandler getDoorHandler() {
-        return doorHandler;
+    public void setNodes(Map<String, Door> doors) {
+        this.doors = doors;
     }
 }

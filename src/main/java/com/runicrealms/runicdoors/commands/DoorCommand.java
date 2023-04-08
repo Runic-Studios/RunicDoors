@@ -1,9 +1,10 @@
 package com.runicrealms.runicdoors.commands;
 
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.Syntax;
+import com.runicrealms.libs.acf.BaseCommand;
+import com.runicrealms.libs.acf.annotation.CommandAlias;
+import com.runicrealms.libs.acf.annotation.CommandCompletion;
+import com.runicrealms.libs.acf.annotation.Subcommand;
+import com.runicrealms.libs.acf.annotation.Syntax;
 import com.runicrealms.runicdoors.RunicDoors;
 import com.runicrealms.runicdoors.config.ConfigSave;
 import com.runicrealms.runicdoors.config.DoorDelete;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 @CommandAlias("door|doors|d|doorcommand|runicdoors|runicdoor")
-public class DoorCommand extends co.aikar.commands.BaseCommand {
+public class DoorCommand extends BaseCommand {
     //used letters C E S N D R T A O Q P H V
     @Subcommand("create|c")
     @CommandCompletion("")
