@@ -1,9 +1,9 @@
-package com.runicrealms.runicdoors.doorStuff.animations;
+package com.runicrealms.runicdoors.door.animations;
 
 import com.runicrealms.runicdoors.RunicDoors;
-import com.runicrealms.runicdoors.doorStuff.Door;
-import com.runicrealms.runicdoors.doorStuff.DoorBlock;
-import com.runicrealms.runicdoors.utility.EfficientBlock;
+import com.runicrealms.runicdoors.door.Door;
+import com.runicrealms.runicdoors.door.DoorBlock;
+import com.runicrealms.runicdoors.utilities.EfficientBlock;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -16,7 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CloseAnimation {
-    public Map<String, QuadCallable<ArrayList<DoorBlock>, ArrayList<DoorBlock>, Door,Integer>> animations = new HashMap<>();
+    public Map<String, QuadCallable<ArrayList<DoorBlock>, ArrayList<DoorBlock>, Door, Integer>> animations = new HashMap<>();
+
     public void addAnimations() {
 
         createParticleAnimation("WARP", Particle.DRAGON_BREATH, Sound.BLOCK_END_PORTAL_FRAME_FILL);
@@ -29,7 +30,7 @@ public class CloseAnimation {
 
         createParticleAnimation("LAVA", Particle.DRIP_LAVA, Sound.BLOCK_LAVA_POP);
 
-        animations.put("BASIC", (doorBlocks, doorBlocks2, door,time) -> {
+        animations.put("BASIC", (doorBlocks, doorBlocks2, door, time) -> {
             for (DoorBlock b : door.getConnections()) {
                 b.getLocation().getBlock().setType(b.getMaterial());
                 if (b.getBlockData() != null) {
@@ -37,26 +38,26 @@ public class CloseAnimation {
                 }
             }
         });
-        animations.put("OPTIMIZED", (doorBlocks, doorBlocks2, door,time) -> {
+        animations.put("OPTIMIZED", (doorBlocks, doorBlocks2, door, time) -> {
             EfficientBlock.place(doorBlocks);
         });
-        animations.put("INVERTBASIC", (doorBlocks, doorBlocks2, door,time) -> {
+        animations.put("INVERTBASIC", (doorBlocks, doorBlocks2, door, time) -> {
 
             for (DoorBlock b : doorBlocks) {
                 b.getLocation().getBlock().setType(Material.AIR, false);
             }
         });
-        animations.put("REMOVEPOWER", (doorBlocks, doorBlocks2, door,time) -> {
+        animations.put("REMOVEPOWER", (doorBlocks, doorBlocks2, door, time) -> {
 
             for (DoorBlock b : doorBlocks) {
-                if(b.getLocation().getBlock() instanceof AnaloguePowerable) {
-                    AnaloguePowerable powerable= (AnaloguePowerable) b.getLocation().getBlock().getBlockData();
+                if (b.getLocation().getBlock() instanceof AnaloguePowerable) {
+                    AnaloguePowerable powerable = (AnaloguePowerable) b.getLocation().getBlock().getBlockData();
                     powerable.setPower(0);
-                    b.getLocation().getBlock().setBlockData(powerable,false);
+                    b.getLocation().getBlock().setBlockData(powerable, false);
                 }
             }
         });
-        animations.put("EXPLODE", (doorBlocks, doorBlocks2, door,time) -> {
+        animations.put("EXPLODE", (doorBlocks, doorBlocks2, door, time) -> {
             for (DoorBlock b : doorBlocks) {
                 new BukkitRunnable() {
                     @Override
@@ -71,23 +72,26 @@ public class CloseAnimation {
 
         });
 
-        animations.put("FADE", (doorBlocks, doorBlocks2, door,time) -> {
+        animations.put("FADE", (doorBlocks, doorBlocks2, door, time) -> {
             int i = 1;
             for (DoorBlock b : doorBlocks) {
 
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if(door.getOpen()){this.cancel();return;}
+                        if (door.getOpen()) {
+                            this.cancel();
+                            return;
+                        }
                         b.getLocation().getBlock().setType(b.getMaterial(), false);
                         b.getLocation().getBlock().setBlockData(b.getBlockData());
                         door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_STONE_BREAK, 1, 0);
                     }
-                }.runTaskLater(RunicDoors.getRunicDoors(), i*time);
+                }.runTaskLater(RunicDoors.getRunicDoors(), i * time);
                 i++;
             }
         });
-        animations.put("RANDOM", (doorBlocks, doorBlocks2, door,time) -> {
+        animations.put("RANDOM", (doorBlocks, doorBlocks2, door, time) -> {
             int i = 1;
             Collections.shuffle(doorBlocks);
             for (DoorBlock b : doorBlocks) {
@@ -95,21 +99,27 @@ public class CloseAnimation {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if(door.getOpen()){this.cancel();return;}
+                        if (door.getOpen()) {
+                            this.cancel();
+                            return;
+                        }
                         b.getLocation().getBlock().setType(b.getMaterial(), false);
                         b.getLocation().getBlock().setBlockData(b.getBlockData());
                         door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_STONE_BREAK, 1, 0);
                     }
-                }.runTaskLater(RunicDoors.getRunicDoors(), i*time);
+                }.runTaskLater(RunicDoors.getRunicDoors(), i * time);
                 i++;
             }
         });
-        animations.put("PARTICLE", (doorBlocks, doorBlocks2, door,time) -> {
+        animations.put("PARTICLE", (doorBlocks, doorBlocks2, door, time) -> {
             for (DoorBlock b : doorBlocks) {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if(door.getOpen()){this.cancel();return;}
+                        if (door.getOpen()) {
+                            this.cancel();
+                            return;
+                        }
                         b.getLocation().getBlock().setType(b.getMaterial(), false);
                         b.getLocation().getBlock().setBlockData(b.getBlockData());
                     }
@@ -124,16 +134,19 @@ public class CloseAnimation {
     }
 
     private void createParticleAnimation(String title, Particle particle, Sound sound) {
-        animations.put(title, (doorBlocks, doorBlocks2, door,time) -> {
+        animations.put(title, (doorBlocks, doorBlocks2, door, time) -> {
             for (DoorBlock b : doorBlocks) {
-                new BukkitRunnable(){
+                new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if(door.getOpen()){this.cancel();return;}
+                        if (door.getOpen()) {
+                            this.cancel();
+                            return;
+                        }
                         b.getLocation().getBlock().setType(b.getMaterial(), false);
                         b.getLocation().getBlock().setBlockData(b.getBlockData());
                     }
-                }.runTaskLater(RunicDoors.getRunicDoors(),4);
+                }.runTaskLater(RunicDoors.getRunicDoors(), 4);
                 b.getLocation().getWorld().spawnParticle(particle, b.getLocation().clone().add(0.5, 0.5, 0.5), 8, 0.1, 0.1, 0.1, 0.1);
             }
             door.getLocation().getWorld().playSound(door.getLocation(), sound, 1, 1);

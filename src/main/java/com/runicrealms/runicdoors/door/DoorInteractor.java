@@ -1,12 +1,9 @@
-package com.runicrealms.runicdoors.doorStuff;
+package com.runicrealms.runicdoors.door;
 
 import com.runicrealms.runicdoors.RunicDoors;
-import com.runicrealms.runicdoors.utility.EfficientBlock;
-import com.runicrealms.runicdoors.utility.Messages;
+import com.runicrealms.runicdoors.utilities.EfficientBlock;
+import com.runicrealms.runicdoors.utilities.Messages;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
 
 import java.util.Random;
@@ -29,19 +26,22 @@ public class DoorInteractor {
 
         }
         if (closest != -1) {
-                Messages.sendActionBarMessage(p, "Closest Node " + closestNode.getId() + "Looped " + nodes.size() + " doors");
+            Messages.sendActionBarMessage(p, "Closest Node " + closestNode.getId() + "Looped " + nodes.size() + " doors");
         } else {
             Messages.sendActionBarMessage(p, "No doors nearby");
         }
         return closestNode;
     }
-    public static void showBlocks(Door door, Material material){
-        EfficientBlock.placeMaterial(door.getConnections(),material);
+
+    public static void showBlocks(Door door, Material material) {
+        EfficientBlock.placeMaterial(door.getConnections(), material);
     }
-    public static void hideBlocks(Door door){
+
+    public static void hideBlocks(Door door) {
         EfficientBlock.place(door.getConnections());
         door.setOpen(false);
     }
+
     public static short newId() {
         int id = new Random().nextInt(32766);
         if (RunicDoors.getRunicDoors().getDoorFileConfig().contains("Nodes." + id) || id == 0) {

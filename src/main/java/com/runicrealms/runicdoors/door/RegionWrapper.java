@@ -1,4 +1,4 @@
-package com.runicrealms.runicdoors.doorStuff;
+package com.runicrealms.runicdoors.door;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -12,18 +12,22 @@ public class RegionWrapper {
     private Location corner2;
 
 
-
     private ArrayList<Block> blocks;
     private boolean active;
-    public RegionWrapper(Player player,Location corner1,Location corner2,boolean active){
+
+    public RegionWrapper(Player player, Location corner1, Location corner2, boolean active) {
         this.player = player;
         this.corner1 = corner1;
         this.corner2 = corner2;
         this.active = false;
     }
 
-    public Player getPlayer() {
-        return this.player;
+    public ArrayList<Block> getBlocks() {
+        return this.blocks;
+    }
+
+    public void setBlocks(ArrayList<Block> blocks) {
+        this.blocks = blocks;
     }
 
     public Location getCorner1() {
@@ -42,19 +46,15 @@ public class RegionWrapper {
         this.corner2 = corner2;
     }
 
+    public Player getPlayer() {
+        return this.player;
+    }
+
     public boolean isActive() {
         return active;
     }
 
     public void setActive(boolean active) {
         this.active = active;
-    }
-
-    public ArrayList<Block> getBlocks() {
-        return this.blocks;
-    }
-
-    public void setBlocks(ArrayList<Block> blocks) {
-        this.blocks = blocks;
     }
 }

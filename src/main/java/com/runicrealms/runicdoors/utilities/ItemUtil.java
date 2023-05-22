@@ -1,4 +1,4 @@
-package com.runicrealms.runicdoors.utility;
+package com.runicrealms.runicdoors.utilities;
 
 import com.runicrealms.runicdoors.RunicDoors;
 import org.bukkit.ChatColor;

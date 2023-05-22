@@ -2,20 +2,14 @@ package com.runicrealms.runicdoors.listeners;
 
 import com.runicrealms.runicdoors.RunicDoors;
 import com.runicrealms.runicdoors.config.ConfigSave;
-import com.runicrealms.runicdoors.doorStuff.Door;
-import com.runicrealms.runicdoors.doorStuff.DoorBlock;
-import com.runicrealms.runicdoors.doorStuff.RegionWrapper;
-import com.runicrealms.runicdoors.doorStuff.Viewer;
-import com.runicrealms.runicdoors.utility.ItemUtil;
+import com.runicrealms.runicdoors.door.Door;
+import com.runicrealms.runicdoors.door.RegionWrapper;
+import com.runicrealms.runicdoors.door.Viewer;
+import com.runicrealms.runicdoors.utilities.ItemUtil;
 import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.Directional;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-
-import javax.swing.text.View;
 
 public class BlockBreakListener implements Listener {
     @EventHandler
@@ -23,7 +17,7 @@ public class BlockBreakListener implements Listener {
         if (blockBreakEvent.getPlayer() == null) return;
 
         //region editor code
-        if(blockBreakEvent.getPlayer().getInventory().getItemInMainHand()!=null) {
+        if (blockBreakEvent.getPlayer().getInventory().getItemInMainHand() != null) {
 
             if (ItemUtil.isRegionSelector(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())) {
                 this.regionStuff(blockBreakEvent);
@@ -32,8 +26,8 @@ public class BlockBreakListener implements Listener {
         }
 
 
-
-        if (!RunicDoors.getRunicDoors().getEditors().containsKey(blockBreakEvent.getPlayer().getUniqueId())) return;
+        if (!RunicDoors.getRunicDoors().getEditors().containsKey(blockBreakEvent.getPlayer().getUniqueId()))
+            return;
 
         Door door = RunicDoors.getRunicDoors().getEditors().get(blockBreakEvent.getPlayer().getUniqueId());
 
@@ -42,7 +36,7 @@ public class BlockBreakListener implements Listener {
             if (door.getConnections().get(i).getLocation().equals(blockBreakEvent.getBlock().getLocation())) {
                 door.getConnections().remove(i);
                 ConfigSave.saveNode(door, RunicDoors.getRunicDoors().doorFileConfig);
-                Viewer.viewAirBlock(blockBreakEvent.getBlock(),8, Material.RED_STAINED_GLASS);
+                Viewer.viewAirBlock(blockBreakEvent.getBlock(), 8, Material.RED_STAINED_GLASS);
                 return;
             }
 
@@ -52,18 +46,21 @@ public class BlockBreakListener implements Listener {
 
     private void regionStuff(BlockBreakEvent blockBreakEvent) {
 
-            blockBreakEvent.setCancelled(true);
-            if (!RunicDoors.getRunicDoors().getEditors().containsKey(blockBreakEvent.getPlayer().getUniqueId())){blockBreakEvent.getPlayer().sendMessage("You need to select a door");return;}
-
-            if(RunicDoors.getRunicDoors().getRegionTools().containsKey(blockBreakEvent.getPlayer().getUniqueId())){
-
-                RunicDoors.getRunicDoors().getRegionTools().get(blockBreakEvent.getPlayer().getUniqueId()).setCorner1(blockBreakEvent.getBlock().getLocation());
-            }else{
-                RunicDoors.getRunicDoors().getRegionTools().put(blockBreakEvent.getPlayer().getUniqueId(),new RegionWrapper(blockBreakEvent.getPlayer(),blockBreakEvent.getBlock().getLocation(),null,false));
-            }
-            blockBreakEvent.getPlayer().sendMessage("New corner set at "+blockBreakEvent.getBlock().getX()+" "+blockBreakEvent.getBlock().getY()+" "+blockBreakEvent.getBlock().getZ());
-            //door select stuff here
+        blockBreakEvent.setCancelled(true);
+        if (!RunicDoors.getRunicDoors().getEditors().containsKey(blockBreakEvent.getPlayer().getUniqueId())) {
+            blockBreakEvent.getPlayer().sendMessage("You need to select a door");
             return;
+        }
+
+        if (RunicDoors.getRunicDoors().getRegionTools().containsKey(blockBreakEvent.getPlayer().getUniqueId())) {
+
+            RunicDoors.getRunicDoors().getRegionTools().get(blockBreakEvent.getPlayer().getUniqueId()).setCorner1(blockBreakEvent.getBlock().getLocation());
+        } else {
+            RunicDoors.getRunicDoors().getRegionTools().put(blockBreakEvent.getPlayer().getUniqueId(), new RegionWrapper(blockBreakEvent.getPlayer(), blockBreakEvent.getBlock().getLocation(), null, false));
+        }
+        blockBreakEvent.getPlayer().sendMessage("New corner set at " + blockBreakEvent.getBlock().getX() + " " + blockBreakEvent.getBlock().getY() + " " + blockBreakEvent.getBlock().getZ());
+        //door select stuff here
+        return;
 
 
     }

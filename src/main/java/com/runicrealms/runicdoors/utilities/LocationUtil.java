@@ -1,17 +1,15 @@
-package com.runicrealms.runicdoors.utility;
+package com.runicrealms.runicdoors.utilities;
 
-import com.runicrealms.runicdoors.doorStuff.DoorBlock;
-import com.runicrealms.runicdoors.doorStuff.Viewer;
+import com.runicrealms.runicdoors.door.DoorBlock;
+import com.runicrealms.runicdoors.door.Viewer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.Directional;
 
 import java.util.ArrayList;
 
 public class LocationUtil {
-    public static ArrayList<Block> blocksBetweenLocation(Location loc1,Location loc2){
+    public static ArrayList<Block> blocksBetweenLocation(Location loc1, Location loc2) {
         ArrayList<Block> blocks = new ArrayList<>();
         int topBlockX = (Math.max(loc1.getBlockX(), loc2.getBlockX()));
         int bottomBlockX = (Math.min(loc1.getBlockX(), loc2.getBlockX()));
@@ -32,7 +30,8 @@ public class LocationUtil {
         }
         return blocks;
     }
-    public static ArrayList<DoorBlock> viewDoorBlocksBetweenLocation(Location loc1, Location loc2, Material material){
+
+    public static ArrayList<DoorBlock> viewDoorBlocksBetweenLocation(Location loc1, Location loc2, Material material) {
         ArrayList<DoorBlock> blocks = new ArrayList<>();
         int topBlockX = (Math.max(loc1.getBlockX(), loc2.getBlockX()));
         int bottomBlockX = (Math.min(loc1.getBlockX(), loc2.getBlockX()));
@@ -47,16 +46,17 @@ public class LocationUtil {
             for (int z = 0; z <= differenceZ; z++) {
                 for (int y = 0; y <= differenceY; y++) {
                     Block block = loc1.getWorld().getBlockAt(bottomBlockX + x, bottomBlockY + y, bottomBlockZ + z);
-                    if(block.getType()==Material.AIR)continue;
+                    if (block.getType() == Material.AIR) continue;
                     blocks.add(new DoorBlock(block.getType(), block.getLocation(), block.getBlockData()));
 
-                    Viewer.viewBlock(block,100,material);
+                    Viewer.viewBlock(block, 100, material);
                 }
             }
         }
         return blocks;
     }
-    public static int countBlocks(Location loc1, Location loc2){
+
+    public static int countBlocks(Location loc1, Location loc2) {
         int count = 0;
         int topBlockX = (Math.max(loc1.getBlockX(), loc2.getBlockX()));
         int bottomBlockX = (Math.min(loc1.getBlockX(), loc2.getBlockX()));
@@ -71,7 +71,7 @@ public class LocationUtil {
             for (int z = 0; z <= differenceZ; z++) {
                 for (int y = 0; y <= differenceY; y++) {
                     Block block = loc1.getWorld().getBlockAt(bottomBlockX + x, bottomBlockY + y, bottomBlockZ + z);
-                    if(block.getType()==Material.AIR)continue;
+                    if (block.getType() == Material.AIR) continue;
                     count++;
                 }
             }

@@ -1,14 +1,14 @@
 package com.runicrealms.runicdoors;
 
 import com.runicrealms.libs.acf.PaperCommandManager;
-import com.runicrealms.runicdoors.commands.DoorCommand;
+import com.runicrealms.runicdoors.commands.DoorCMD;
 import com.runicrealms.runicdoors.config.ConfigLoad;
 import com.runicrealms.runicdoors.config.Loader;
-import com.runicrealms.runicdoors.doorStuff.Door;
-import com.runicrealms.runicdoors.doorStuff.DoorHandler;
-import com.runicrealms.runicdoors.doorStuff.RegionWrapper;
-import com.runicrealms.runicdoors.doorStuff.animations.Animation;
-import com.runicrealms.runicdoors.doorStuff.animations.CloseAnimation;
+import com.runicrealms.runicdoors.door.Door;
+import com.runicrealms.runicdoors.door.DoorHandler;
+import com.runicrealms.runicdoors.door.RegionWrapper;
+import com.runicrealms.runicdoors.door.animations.Animation;
+import com.runicrealms.runicdoors.door.animations.CloseAnimation;
 import com.runicrealms.runicdoors.listeners.BlockBreakListener;
 import com.runicrealms.runicdoors.listeners.BlockPlaceListener;
 import com.runicrealms.runicdoors.listeners.PlayerInteractListener;
@@ -20,7 +20,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public final class RunicDoors extends JavaPlugin {
     private static RunicDoors runicDoors;
@@ -113,7 +117,7 @@ public final class RunicDoors extends JavaPlugin {
         ConfigLoad.loadDoors(doorFileConfig);
         saveDoors();
         manager = new PaperCommandManager(this);
-        manager.registerCommand(new DoorCommand());
+        manager.registerCommand(new DoorCMD());
         registerEvents(this, new BlockPlaceListener(), new BlockBreakListener(), new PlayerInteractListener());
         BukkitTask doorrange = new RangeOpen().runTaskTimer(this, 10, 5);
         //gives 5 seconds to load all doors from config, then this runs and closes them 1 every tick!
