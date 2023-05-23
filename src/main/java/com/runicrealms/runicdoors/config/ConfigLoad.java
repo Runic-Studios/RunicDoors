@@ -17,7 +17,7 @@ import java.util.logging.Level;
 
 public class ConfigLoad {
     public static void loadDoors(FileConfiguration config) {
-        Bukkit.getScheduler().runTaskAsynchronously(RunicDoors.getRunicDoors(), new Runnable() {
+        Bukkit.getScheduler().runTaskAsynchronously(RunicDoors.getInstance(), new Runnable() {
             @Override
             public void run() {
                 Map<String, Door> nodes = new HashMap<String, Door>();
@@ -71,8 +71,8 @@ public class ConfigLoad {
                 }
 
 
-                RunicDoors.getRunicDoors().getDoorHandler().placeDoorsInGrid(nodes);
-                RunicDoors.getRunicDoors().setNodes(nodes);
+                RunicDoors.getInstance().getDoorHandler().placeDoorsInGrid(nodes);
+                RunicDoors.getInstance().setNodes(nodes);
                 Bukkit.getLogger().log(Level.INFO, "[RunicDoors] Doors have been loaded!");
             }
         });

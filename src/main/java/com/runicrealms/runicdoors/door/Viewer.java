@@ -15,7 +15,7 @@ public class Viewer {
             public void run() {
                 block.setBlockData(blockData);
             }
-        }.runTaskLater(RunicDoors.getRunicDoors(), timeMillis);
+        }.runTaskLater(RunicDoors.getInstance(), timeMillis);
     }
 
     public static void viewAirBlock(Block block, int timeMillis, Material material) {
@@ -24,12 +24,12 @@ public class Viewer {
             public void run() {
                 block.getLocation().getBlock().setType(material, false);
             }
-        }.runTaskLater(RunicDoors.getRunicDoors(), 0);
+        }.runTaskLater(RunicDoors.getInstance(), 0);
         new BukkitRunnable() {
             @Override
             public void run() {
                 block.setType(Material.AIR);
             }
-        }.runTaskLater(RunicDoors.getRunicDoors(), timeMillis);
+        }.runTaskLater(RunicDoors.getInstance(), timeMillis);
     }
 }

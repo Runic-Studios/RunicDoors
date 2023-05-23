@@ -30,7 +30,7 @@ public class EfficientBlock {
                         blocks.get(loop).getLocation().getBlock().setBlockData(blocks.get(loop).getBlockData(), false);
                     }
                 }
-            }.runTaskLater(RunicDoors.getRunicDoors(), delay * i);
+            }.runTaskLater(RunicDoors.getInstance(), delay * i);
         }
     }
 
@@ -52,7 +52,7 @@ public class EfficientBlock {
                         blocks.get(loop).getLocation().getBlock().setType(material, false);
                     }
                 }
-            }.runTaskLater(RunicDoors.getRunicDoors(), delay * i);
+            }.runTaskLater(RunicDoors.getInstance(), delay * i);
         }
     }
 
@@ -75,7 +75,7 @@ public class EfficientBlock {
                         blocks.get(loop).getLocation().getBlock().setType(Material.AIR, false);
                     }
                 }
-            }.runTaskLater(RunicDoors.getRunicDoors(), delay * i);
+            }.runTaskLater(RunicDoors.getInstance(), delay * i);
         }
     }
 
@@ -99,7 +99,7 @@ public class EfficientBlock {
                         player.sendBlockChange(blocks.get(loop).getLocation(), blockData);
                     }
                 }
-            }.runTaskLater(RunicDoors.getRunicDoors(), delay * i);
+            }.runTaskLater(RunicDoors.getInstance(), delay * i);
         }
     }
 
@@ -126,7 +126,7 @@ public class EfficientBlock {
                         player.spawnParticle(particle, blocks.get(loop).getLocation().clone().add(.5, 0.5, .5), 1);
                     }
                 }
-            }.runTaskLater(RunicDoors.getRunicDoors(), delay * i);
+            }.runTaskLater(RunicDoors.getInstance(), delay * i);
         }
     }
 }

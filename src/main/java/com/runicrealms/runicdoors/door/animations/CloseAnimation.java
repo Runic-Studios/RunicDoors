@@ -65,7 +65,7 @@ public class CloseAnimation {
                         b.getLocation().getBlock().setType(b.getMaterial(), false);
                         b.getLocation().getBlock().setBlockData(b.getBlockData());
                     }
-                }.runTaskLater(RunicDoors.getRunicDoors(), 4);
+                }.runTaskLater(RunicDoors.getInstance(), 4);
             }
             door.getLocation().getWorld().spawnParticle(Particle.EXPLOSION_LARGE, door.getLocation().clone().add(0.5, 1.5, 0.5), 2);
             door.getLocation().getWorld().playSound(door.getLocation(), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 1, 0);
@@ -87,7 +87,7 @@ public class CloseAnimation {
                         b.getLocation().getBlock().setBlockData(b.getBlockData());
                         door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_STONE_BREAK, 1, 0);
                     }
-                }.runTaskLater(RunicDoors.getRunicDoors(), i * time);
+                }.runTaskLater(RunicDoors.getInstance(), i * time);
                 i++;
             }
         });
@@ -107,7 +107,7 @@ public class CloseAnimation {
                         b.getLocation().getBlock().setBlockData(b.getBlockData());
                         door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_STONE_BREAK, 1, 0);
                     }
-                }.runTaskLater(RunicDoors.getRunicDoors(), i * time);
+                }.runTaskLater(RunicDoors.getInstance(), i * time);
                 i++;
             }
         });
@@ -123,13 +123,13 @@ public class CloseAnimation {
                         b.getLocation().getBlock().setType(b.getMaterial(), false);
                         b.getLocation().getBlock().setBlockData(b.getBlockData());
                     }
-                }.runTaskLater(RunicDoors.getRunicDoors(), 4);
+                }.runTaskLater(RunicDoors.getInstance(), 4);
                 b.getLocation().getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().clone().add(0.5, 0.5, 0.5), 5, 0.1, 0.1, 0.1, 0.1, b.getBlockData());
 
                 door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_STONE_BREAK, 1, 0);
             }
         });
-        RunicDoors.getRunicDoors().getManager().getCommandCompletions().registerCompletion("@CloseAnimations", c -> animations.keySet());
+        RunicDoors.getInstance().getManager().getCommandCompletions().registerCompletion("@CloseAnimations", c -> animations.keySet());
 
     }
 
@@ -146,7 +146,7 @@ public class CloseAnimation {
                         b.getLocation().getBlock().setType(b.getMaterial(), false);
                         b.getLocation().getBlock().setBlockData(b.getBlockData());
                     }
-                }.runTaskLater(RunicDoors.getRunicDoors(), 4);
+                }.runTaskLater(RunicDoors.getInstance(), 4);
                 b.getLocation().getWorld().spawnParticle(particle, b.getLocation().clone().add(0.5, 0.5, 0.5), 8, 0.1, 0.1, 0.1, 0.1);
             }
             door.getLocation().getWorld().playSound(door.getLocation(), sound, 1, 1);

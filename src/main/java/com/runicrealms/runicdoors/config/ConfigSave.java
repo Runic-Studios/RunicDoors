@@ -14,7 +14,7 @@ public class ConfigSave {
             Bukkit.getLogger().log(Level.INFO, "[RunicDoors] Door saving error");
             return;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(RunicDoors.getRunicDoors(), new Runnable() {
+        Bukkit.getScheduler().runTaskAsynchronously(RunicDoors.getInstance(), new Runnable() {
             @Override
             public void run() {
 
@@ -43,7 +43,7 @@ public class ConfigSave {
                     config.set("Doors." + node.getId() + ".blocks." + i + ".data", node.getConnections().get(i - 1).getBlockData().getAsString());
                 }
 
-                RunicDoors.getRunicDoors().saveDoors();
+                RunicDoors.getInstance().saveDoors();
             }
         });
     }

@@ -72,6 +72,13 @@
     </repositories>
 
     <dependencies>
+        <!-- WorldGuard Events -->
+        <dependency>
+            <groupId>net.raidstone</groupId>
+            <artifactId>WorldGuardEvents</artifactId>
+            <version>1.18.1</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- Paper API -->
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>

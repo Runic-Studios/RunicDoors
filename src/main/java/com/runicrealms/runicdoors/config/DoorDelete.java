@@ -6,6 +6,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class DoorDelete {
     public static void deleteNode(String id, FileConfiguration config) {
-        Bukkit.getScheduler().runTaskAsynchronously(RunicDoors.getRunicDoors(), () -> config.set("Doors." + id, null));
+        Bukkit.getScheduler().runTaskAsynchronously(RunicDoors.getInstance(), () -> config.set("Doors." + id, null));
     }
 }

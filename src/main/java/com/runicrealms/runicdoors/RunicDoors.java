@@ -12,42 +12,49 @@ import com.runicrealms.runicdoors.door.animations.CloseAnimation;
 import com.runicrealms.runicdoors.listeners.BlockBreakListener;
 import com.runicrealms.runicdoors.listeners.BlockPlaceListener;
 import com.runicrealms.runicdoors.listeners.PlayerInteractListener;
+import com.runicrealms.runicdoors.portal.Portal;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public final class RunicDoors extends JavaPlugin {
-    private static RunicDoors runicDoors;
+    private static RunicDoors instance;
     private final Map<UUID, Door> editors = new HashMap<>();
     private final Set<String> viewing = new HashSet<>();
     private final Map<UUID, RegionWrapper> regionTools = new HashMap<>();
     private final Map<String, Door> openDoors = new HashMap<>();
-    public File doorConfig;
-    public FileConfiguration doorFileConfig;
+    private final Map<String, Portal> portals = new HashMap<>();
+    private final Map<String, Location> destinations = new HashMap<>();
+    private File doorConfig;
+    private FileConfiguration doorFileConfig;
     private DoorHandler doorHandler;
     private Map<String, Door> doors = new HashMap<>();
     private Animation animator;
     private CloseAnimation closeAnimator;
     private PaperCommandManager manager;
 
-    public static RunicDoors getRunicDoors() {
-        return runicDoors;
+    public static RunicDoors getInstance() {
+        return instance;
     }
 
     public static void registerEvents(org.bukkit.plugin.Plugin plugin, Listener... listeners) {
         for (Listener listener : listeners) {
             Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
         }
+    }
+
+    public Map<String, Portal> getPortals() {
+        return portals;
+    }
+
+    public Map<String, Location> getDestinations() {
+        return destinations;
     }
 
     public Animation getAnimator() {
@@ -100,15 +107,10 @@ public final class RunicDoors extends JavaPlugin {
         saveDoors();
     }
 
-    /*
-        TODO
-        Closing animations
-         */
     @Override
     public void onEnable() {
         // Plugin startup logic
-
-        runicDoors = this;
+        instance = this;
         animator = new Animation();
         closeAnimator = new CloseAnimation();
         doorHandler = new DoorHandler();
@@ -119,9 +121,9 @@ public final class RunicDoors extends JavaPlugin {
         manager = new PaperCommandManager(this);
         manager.registerCommand(new DoorCMD());
         registerEvents(this, new BlockPlaceListener(), new BlockBreakListener(), new PlayerInteractListener());
-        BukkitTask doorrange = new RangeOpen().runTaskTimer(this, 10, 5);
-        //gives 5 seconds to load all doors from config, then this runs and closes them 1 every tick!
-        BukkitTask loaddoors = new Loader().runTaskLater(this, 100);
+        new RangeOpen().runTaskTimer(this, 10, 5);
+        // Gives a few seconds to load all doors from config, then this runs and closes them 1 every tick!
+        new Loader().runTaskLater(this, 10 * 20L);
 
         animator.addAnimations();
         closeAnimator.addAnimations();
