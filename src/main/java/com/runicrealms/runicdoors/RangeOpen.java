@@ -15,7 +15,7 @@ public class RangeOpen extends BukkitRunnable {
         if (distance > Math.pow(door.getDistance(), 2)) return false;
         if (player.hasPermission(door.getPermission()) || door.getPermission().equals("none"))
             return false;
-        //fling player away
+        // Fling player away
         Vector direction = player.getLocation().subtract(door.getLocation()).toVector();
         player.setVelocity(direction.multiply((float) 0.1 * door.getKnockback()));
         //if the doors open set some blocks to prevent them passing through
@@ -50,8 +50,8 @@ public class RangeOpen extends BukkitRunnable {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (RunicDoors.getInstance().getEditors().containsKey(player.getUniqueId())) continue;
-            for (Door door : RunicDoors.getInstance().getDoorHandler().getDoorGrid().getNearbyNodes(player.getLocation())) {
+            if (RunicDoors.inst().getEditors().containsKey(player.getUniqueId())) continue;
+            for (Door door : RunicDoors.inst().getDoorHandler().getDoorGrid().getNearbyNodes(player.getLocation())) {
                 //create a variable since its used twice
                 double distance = door.getLocation().distanceSquared(player.getLocation());
                 //we skip opening the door if the player doesn't have perms
@@ -60,7 +60,7 @@ public class RangeOpen extends BukkitRunnable {
 
                 if (distance < door.getDistance() * door.getDistance()) {
 
-                    if (!RunicDoors.getInstance().getOpenDoors().containsKey(door.getId() + "")) {
+                    if (!RunicDoors.inst().getOpenDoors().containsKey(door.getId() + "")) {
                         door.setOpen(true);
                         //always set open first
                         door.openForPlayer(player);

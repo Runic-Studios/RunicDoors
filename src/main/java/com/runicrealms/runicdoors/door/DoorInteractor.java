@@ -14,7 +14,7 @@ public class DoorInteractor {
         //Please run this method ASYNC!!!!
         double closest = -1;
         Door closestNode = null;
-        Set<Door> nodes = RunicDoors.getInstance().getDoorHandler().getDoorGrid().getNearbyNodes(p.getLocation());
+        Set<Door> nodes = RunicDoors.inst().getDoorHandler().getDoorGrid().getNearbyNodes(p.getLocation());
         for (Door entry : nodes) {
             if (closest == -1) {
                 closest = p.getLocation().distanceSquared(entry.getLocation());
@@ -44,7 +44,7 @@ public class DoorInteractor {
 
     public static short newId() {
         int id = new Random().nextInt(32766);
-        if (RunicDoors.getInstance().getDoorFileConfig().contains("Nodes." + id) || id == 0) {
+        if (RunicDoors.inst().getDoorFileConfig().contains("Nodes." + id) || id == 0) {
             return newId();
         }
         return (short) id;

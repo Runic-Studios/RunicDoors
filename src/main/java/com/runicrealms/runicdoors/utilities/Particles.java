@@ -68,7 +68,7 @@ public class Particles {
                 Particles.drawSphere(location, 0.5, ballColor, 5);
                 Particles.drawLine(location, new Location(location.getWorld(), location.getX(), location.getY() + 2, location.getZ()), .3, stickColor);
             }
-        }.runTaskTimer(RunicDoors.getInstance(), 0, 5);
+        }.runTaskTimer(RunicDoors.inst(), 0, 5);
     }
 
     public static void drawCube(Location l, Color c) {

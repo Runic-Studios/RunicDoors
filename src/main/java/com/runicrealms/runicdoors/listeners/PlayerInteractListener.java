@@ -23,16 +23,16 @@ public class PlayerInteractListener implements Listener {
         if (ItemUtil.isRegionSelector(playerInteractEvent.getPlayer().getInventory().getItemInMainHand())) {
 
             playerInteractEvent.setCancelled(true);
-            if (!RunicDoors.getInstance().getEditors().containsKey(playerInteractEvent.getPlayer().getUniqueId())) {
+            if (!RunicDoors.inst().getEditors().containsKey(playerInteractEvent.getPlayer().getUniqueId())) {
                 playerInteractEvent.getPlayer().sendMessage("You need to select a door");
                 return;
             }
 
-            if (RunicDoors.getInstance().getRegionTools().containsKey(playerInteractEvent.getPlayer().getUniqueId())) {
+            if (RunicDoors.inst().getRegionTools().containsKey(playerInteractEvent.getPlayer().getUniqueId())) {
 
-                RunicDoors.getInstance().getRegionTools().get(playerInteractEvent.getPlayer().getUniqueId()).setCorner2(playerInteractEvent.getClickedBlock().getLocation());
+                RunicDoors.inst().getRegionTools().get(playerInteractEvent.getPlayer().getUniqueId()).setCorner2(playerInteractEvent.getClickedBlock().getLocation());
             } else {
-                RunicDoors.getInstance().getRegionTools().put(playerInteractEvent.getPlayer().getUniqueId(), new RegionWrapper(playerInteractEvent.getPlayer(), null, playerInteractEvent.getClickedBlock().getLocation(), false));
+                RunicDoors.inst().getRegionTools().put(playerInteractEvent.getPlayer().getUniqueId(), new RegionWrapper(playerInteractEvent.getPlayer(), null, playerInteractEvent.getClickedBlock().getLocation(), false));
             }
             playerInteractEvent.getPlayer().sendMessage("New corner set at " + playerInteractEvent.getClickedBlock().getX() + " " + playerInteractEvent.getClickedBlock().getY() + " " + playerInteractEvent.getClickedBlock().getZ());
             //door select stuff here

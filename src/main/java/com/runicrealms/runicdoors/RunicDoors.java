@@ -4,11 +4,13 @@ import com.runicrealms.libs.acf.PaperCommandManager;
 import com.runicrealms.runicdoors.commands.DoorCMD;
 import com.runicrealms.runicdoors.config.ConfigLoad;
 import com.runicrealms.runicdoors.config.Loader;
+import com.runicrealms.runicdoors.config.PortalConfigRead;
 import com.runicrealms.runicdoors.door.Door;
 import com.runicrealms.runicdoors.door.DoorHandler;
 import com.runicrealms.runicdoors.door.RegionWrapper;
 import com.runicrealms.runicdoors.door.animations.Animation;
 import com.runicrealms.runicdoors.door.animations.CloseAnimation;
+import com.runicrealms.runicdoors.listeners.ActivationListener;
 import com.runicrealms.runicdoors.listeners.BlockBreakListener;
 import com.runicrealms.runicdoors.listeners.BlockPlaceListener;
 import com.runicrealms.runicdoors.listeners.PlayerInteractListener;
@@ -31,15 +33,19 @@ public final class RunicDoors extends JavaPlugin {
     private final Map<String, Door> openDoors = new HashMap<>();
     private final Map<String, Portal> portals = new HashMap<>();
     private final Map<String, Location> destinations = new HashMap<>();
-    private File doorConfig;
+    private File portalFile;
+    private File destinationFile;
+    private File doorFile;
     private FileConfiguration doorFileConfig;
     private DoorHandler doorHandler;
     private Map<String, Door> doors = new HashMap<>();
     private Animation animator;
     private CloseAnimation closeAnimator;
+    private YamlConfiguration portalFileConfig;
+    private YamlConfiguration destinationFileConfig;
     private PaperCommandManager manager;
 
-    public static RunicDoors getInstance() {
+    public static RunicDoors inst() {
         return instance;
     }
 
@@ -47,6 +53,22 @@ public final class RunicDoors extends JavaPlugin {
         for (Listener listener : listeners) {
             Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
         }
+    }
+
+    public File getPortalFile() {
+        return portalFile;
+    }
+
+    public File getDestinationFile() {
+        return destinationFile;
+    }
+
+    public YamlConfiguration getDestinationFileConfig() {
+        return destinationFileConfig;
+    }
+
+    public YamlConfiguration getPortalFileConfig() {
+        return portalFileConfig;
     }
 
     public Map<String, Portal> getPortals() {
@@ -65,8 +87,8 @@ public final class RunicDoors extends JavaPlugin {
         return closeAnimator;
     }
 
-    public File getDoorConfig() {
-        return doorConfig;
+    public File getDoorFile() {
+        return doorFile;
     }
 
     public FileConfiguration getDoorFileConfig() {
@@ -104,7 +126,7 @@ public final class RunicDoors extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        saveDoors();
+        saveConfiguration(doorFile, doorFileConfig);
     }
 
     @Override
@@ -114,13 +136,26 @@ public final class RunicDoors extends JavaPlugin {
         animator = new Animation();
         closeAnimator = new CloseAnimation();
         doorHandler = new DoorHandler();
-        doorConfig = new File(getDataFolder(), "DoorStuff.yml");
-        doorFileConfig = YamlConfiguration.loadConfiguration(doorConfig);
+        doorFile = new File(getDataFolder(), "DoorStuff.yml");
+        portalFile = new File(getDataFolder(), "portals.yml");
+        destinationFile = new File(getDataFolder(), "destinations.yml");
+        doorFileConfig = YamlConfiguration.loadConfiguration(doorFile);
+        portalFileConfig = YamlConfiguration.loadConfiguration(portalFile);
         ConfigLoad.loadDoors(doorFileConfig);
-        saveDoors();
+        portalFileConfig = YamlConfiguration.loadConfiguration(portalFile);
+        destinationFileConfig = YamlConfiguration.loadConfiguration(destinationFile);
+        PortalConfigRead.readPortalsFromConfig(portalFileConfig, destinationFileConfig);
+        saveConfiguration(doorFile, doorFileConfig);
         manager = new PaperCommandManager(this);
         manager.registerCommand(new DoorCMD());
-        registerEvents(this, new BlockPlaceListener(), new BlockBreakListener(), new PlayerInteractListener());
+        registerEvents
+                (
+                        this,
+                        new BlockPlaceListener(),
+                        new BlockBreakListener(),
+                        new PlayerInteractListener(),
+                        new ActivationListener()
+                );
         new RangeOpen().runTaskTimer(this, 10, 5);
         // Gives a few seconds to load all doors from config, then this runs and closes them 1 every tick!
         new Loader().runTaskLater(this, 10 * 20L);
@@ -130,14 +165,15 @@ public final class RunicDoors extends JavaPlugin {
 
     }
 
-    public void saveDoors() {
+    public void saveConfiguration(File file, FileConfiguration configuration) {
         try {
-            doorFileConfig.options().copyDefaults(true);
-            doorFileConfig.save(doorConfig);
+            configuration.options().copyDefaults(true);
+            configuration.save(file);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     public void setNodes(Map<String, Door> doors) {
         this.doors = doors;

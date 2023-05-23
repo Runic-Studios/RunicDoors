@@ -69,7 +69,7 @@ public class Animation {
                         b.getLocation().getBlock().setType(Material.AIR, false);
                         door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_STONE_BREAK, 1, 0);
                     }
-                }.runTaskLater(RunicDoors.getInstance(), i * time);
+                }.runTaskLater(RunicDoors.inst(), i * time);
                 i++;
             }
         });
@@ -88,7 +88,7 @@ public class Animation {
                         b.getLocation().getBlock().setType(Material.AIR, false);
                         door.getLocation().getWorld().playSound(door.getLocation(), Sound.BLOCK_STONE_BREAK, 1, 0);
                     }
-                }.runTaskLater(RunicDoors.getInstance(), i * time);
+                }.runTaskLater(RunicDoors.inst(), i * time);
                 i++;
             }
         });
@@ -109,9 +109,9 @@ public class Animation {
                                 b.getLocation().getBlock().setType(Material.AIR, false);
 
                             }
-                        }.runTaskLater(RunicDoors.getInstance(), 1);
+                        }.runTaskLater(RunicDoors.inst(), 1);
                     }
-                }.runTaskLater(RunicDoors.getInstance(), i * time);
+                }.runTaskLater(RunicDoors.inst(), i * time);
                 i++;
             }
 
@@ -174,7 +174,7 @@ public class Animation {
             door.getLocation().getWorld().playSound(door.getLocation(), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 1, 0);
 
         });
-        RunicDoors.getInstance().getManager().getCommandCompletions().registerCompletion("@Animations", c -> animations.keySet());
+        RunicDoors.inst().getManager().getCommandCompletions().registerCompletion("@Animations", c -> animations.keySet());
     }
 
 

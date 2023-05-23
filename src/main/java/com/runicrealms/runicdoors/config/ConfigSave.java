@@ -14,7 +14,7 @@ public class ConfigSave {
             Bukkit.getLogger().log(Level.INFO, "[RunicDoors] Door saving error");
             return;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(RunicDoors.getInstance(), new Runnable() {
+        Bukkit.getScheduler().runTaskAsynchronously(RunicDoors.inst(), new Runnable() {
             @Override
             public void run() {
 
@@ -32,7 +32,7 @@ public class ConfigSave {
                 config.set("Doors" + "." + node.getId() + ".denymessage", node.getDenyMessage());
                 int i = 0;
                 config.set("Doors." + node.getId() + ".blocks", null);
-                for (DoorBlock doorBlock : node.getConnections()) {
+                for (DoorBlock ignored : node.getConnections()) {
                     i++;
                     config.set("Doors." + node.getId() + ".blocks." + i + ".location.world", node.getConnections().get(i - 1).getLocation().getWorld().getName());
                     config.set("Doors." + node.getId() + ".blocks." + i + ".location.x", node.getConnections().get(i - 1).getLocation().getX());
@@ -43,7 +43,7 @@ public class ConfigSave {
                     config.set("Doors." + node.getId() + ".blocks." + i + ".data", node.getConnections().get(i - 1).getBlockData().getAsString());
                 }
 
-                RunicDoors.getInstance().saveDoors();
+                RunicDoors.inst().saveConfiguration(RunicDoors.inst().getDoorFile(), RunicDoors.inst().getDoorFileConfig());
             }
         });
     }

@@ -10,7 +10,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class ItemUtil {
 
-    public static final NamespacedKey key = new NamespacedKey(RunicDoors.getInstance(), "Doors");
+    public static final NamespacedKey key = new NamespacedKey(RunicDoors.inst(), "Doors");
 
     public static ItemStack getRegionItem() {
         ItemStack regionItem = new ItemStack(Material.BLAZE_ROD);

@@ -11,8 +11,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class PortalConfigRead {
 
-    public static void readPortals(YamlConfiguration portalFileConfig, YamlConfiguration destinationFileConfig) {
-        Bukkit.getScheduler().runTaskAsynchronously(RunicDoors.getInstance(), () -> {
+    public static void readPortalsFromConfig(YamlConfiguration portalFileConfig, YamlConfiguration destinationFileConfig) {
+        Bukkit.getScheduler().runTaskAsynchronously(RunicDoors.inst(), () -> {
             Bukkit.getLogger().info("RunicDoors: Loading all portals!");
             for (String key : portalFileConfig.getKeys(false)) {
                 World world = getWorld(portalFileConfig, key);
@@ -26,7 +26,7 @@ public class PortalConfigRead {
                 String requiredLevelStr = portalFileConfig.getString(key + ".requiredLevel");
                 int requiredLevel = requiredLevelStr != null ? Integer.parseInt(requiredLevelStr) : 0;
                 Portal portal = new Portal(destination, key, regionName, trigger, requiredLevel);
-                RunicDoors.getInstance().getPortals().put(key, portal);
+                RunicDoors.inst().getPortals().put(key, portal);
             }
             Bukkit.broadcastMessage("Loading Destinations");
             for (String key : destinationFileConfig.getKeys(false)) {
@@ -38,7 +38,7 @@ public class PortalConfigRead {
                         destinationFileConfig.getDouble(key + ".pos.Z"));
                 location.setYaw((float) destinationFileConfig.getDouble(key + ".pos.yaw"));
                 location.setPitch((float) destinationFileConfig.getDouble(key + ".pos.pitch"));
-                RunicDoors.getInstance().getDestinations().put(key, location);
+                RunicDoors.inst().getDestinations().put(key, location);
             }
         });
     }

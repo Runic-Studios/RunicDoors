@@ -10,13 +10,13 @@ public class Loader extends BukkitRunnable {
     @Override
     public void run() {
         int i = 0;
-        for (Door door : RunicDoors.getInstance().getDoors().values()) {
+        for (Door door : RunicDoors.inst().getDoors().values()) {
             BukkitTask run = new BukkitRunnable() {
                 @Override
                 public void run() {
                     door.closeForPlayer(null);
                 }
-            }.runTaskLater(RunicDoors.getInstance(), i);
+            }.runTaskLater(RunicDoors.inst(), i);
 
             i++;
         }

@@ -75,7 +75,7 @@ public class Door {
     }
 
     public void closeForPlayer(Player player) {
-        QuadCallable triCallabl = RunicDoors.getInstance().getCloseAnimator().animations.get(this.getCloseAnimation());
+        QuadCallable triCallabl = RunicDoors.inst().getCloseAnimator().animations.get(this.getCloseAnimation());
 
         triCallabl.apply(this.getConnections().clone(), null, this, speed);
         this.open = false;
@@ -182,24 +182,24 @@ public class Door {
     }
 
     public void openForPlayer(Player player) {
-        QuadCallable callable = RunicDoors.getInstance().getAnimator().animations.get(this.getAnimation());
+        QuadCallable callable = RunicDoors.inst().getAnimator().animations.get(this.getAnimation());
 
         callable.apply(this.getConnections().clone(), null, this, speed);
 
-        RunicDoors.getInstance().getOpenDoors().put(this.getId() + "", this);
+        RunicDoors.inst().getOpenDoors().put(this.getId() + "", this);
         BukkitTask runlater = new BukkitRunnable() {
             @Override
             public void run() {
                 if (!open) this.cancel();
                 if (timeOpen <= 0) {
                     closeForPlayer(null);
-                    RunicDoors.getInstance().getOpenDoors().remove(getId() + "");
+                    RunicDoors.inst().getOpenDoors().remove(getId() + "");
                     this.cancel();
                 }
                 timeOpen--;
 
             }
-        }.runTaskTimer(RunicDoors.getInstance(), 20, 20);
+        }.runTaskTimer(RunicDoors.inst(), 20, 20);
     }
 
     public void setDefaultTime(int number) {
