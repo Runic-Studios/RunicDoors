@@ -2,6 +2,7 @@ package com.runicrealms.runicdoors;
 
 import com.runicrealms.libs.acf.PaperCommandManager;
 import com.runicrealms.runicdoors.commands.DoorCMD;
+import com.runicrealms.runicdoors.commands.PortalCMD;
 import com.runicrealms.runicdoors.config.ConfigLoad;
 import com.runicrealms.runicdoors.config.Loader;
 import com.runicrealms.runicdoors.config.PortalConfigRead;
@@ -148,6 +149,7 @@ public final class RunicDoors extends JavaPlugin {
         saveConfiguration(doorFile, doorFileConfig);
         manager = new PaperCommandManager(this);
         manager.registerCommand(new DoorCMD());
+        manager.registerCommand(new PortalCMD());
         registerEvents
                 (
                         this,

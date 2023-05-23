@@ -6,7 +6,6 @@ import com.runicrealms.runicdoors.RunicDoors;
 import com.runicrealms.runicdoors.config.DestinationConfigWrite;
 import com.runicrealms.runicdoors.config.PortalConfigWrite;
 import com.runicrealms.runicdoors.portal.Portal;
-import com.runicrealms.runicdoors.utilities.LocationUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -53,8 +52,8 @@ public class PortalCMD extends BaseCommand {
 
     @Subcommand("create")
     @CommandCompletion("name|alterra|koldore destinationname|alterra|koldore|")
-    @Syntax("<name> <destination> <requiredLevel> &e- creates portal by name")
-    public void onPortalCreate(Player player, String id, String destination, String requiredLevel) {
+    @Syntax("<name> <destination> <regionName> <requiredLevel> &e- creates portal by name")
+    public void onPortalCreate(Player player, String id, String destination, String regionName, String requiredLevel) {
         if (!player.isOp()) {
             player.sendMessage(PREFIX + "No perms");
             return;
@@ -67,35 +66,18 @@ public class PortalCMD extends BaseCommand {
             player.sendMessage(PREFIX + "Portal '" + id + "' already exists!");
             return;
         }
-        if (regionToolCheck(player)) return;
-        player.sendMessage(PREFIX + "Creating Basic Portal: " + id);
-        Portal portal = new Portal(destination, id, "", Material.AIR, Integer.parseInt(requiredLevel));
-        LocationUtil.viewDoorBlocksBetweenLocation(RunicDoors.inst().getRegionTools().get(player.getUniqueId()).getCorner1(), RunicDoors.inst().getRegionTools().get(player.getUniqueId()).getCorner2(), Material.PURPLE_STAINED_GLASS);
+        player.sendMessage(PREFIX + ChatColor.GREEN + "Creating Basic Portal: " + id + "!");
+        Portal portal = new Portal(destination, id, regionName, Material.AIR, Integer.parseInt(requiredLevel));
         PortalConfigWrite.writeToConfig(portal);
         RunicDoors.inst().getPortals().put(id, portal);
     }
-
-//    @Subcommand("edit|e")
-//    @Syntax("<name> &e- exit editing.")
-//    public void onPortalEdit(Player player) {
-//        if (!player.isOp()) {
-//            player.sendMessage(PREFIX + "No perms");
-//            return;
-//        }
-//        if (RunicDoors.getInstance().getGatewayEditorsMap().get(player.getUniqueId()) != null) {
-//            player.sendMessage(PREFIX + "No longer editing");
-//            RunicDoors.getInstance().getGatewayEditorsMap().remove(player.getUniqueId());
-//        } else {
-//            player.sendMessage(PREFIX + "You are not in editor mode.");
-//        }
-//    }
 
     @Subcommand(("help|h"))
     @CatchUnknown
     @Default
     public void onPortalHelp(Player player) {
         // todo: help command
-        player.sendMessage(PREFIX + ChatColor.YELLOW + "Test");
+        player.sendMessage(PREFIX + ChatColor.YELLOW + "You entered an invalid command! Here's some help: TBD");
     }
 
     @Subcommand(("list|ls"))
@@ -178,19 +160,4 @@ public class PortalCMD extends BaseCommand {
 
     }
 
-    private boolean regionToolCheck(Player player) {
-        if (!RunicDoors.inst().getRegionTools().containsKey(player.getUniqueId())) {
-            player.sendMessage(PREFIX + "You don't have a region selected");
-            return true;
-        }
-        if (RunicDoors.inst().getRegionTools().get(player.getUniqueId()).getCorner1() == null) {
-            player.sendMessage(PREFIX + "You don't have a Corner 1");
-            return true;
-        }
-        if (RunicDoors.inst().getRegionTools().get(player.getUniqueId()).getCorner2() == null) {
-            player.sendMessage(PREFIX + "You don't have a Corner 2");
-            return true;
-        }
-        return false;
-    }
 }
