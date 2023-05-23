@@ -1,10 +1,10 @@
 package com.runicrealms.runicdoors.commands;
 
-import com.runicrealms.libs.acf.BaseCommand;
-import com.runicrealms.libs.acf.annotation.CommandAlias;
-import com.runicrealms.libs.acf.annotation.CommandCompletion;
-import com.runicrealms.libs.acf.annotation.Subcommand;
-import com.runicrealms.libs.acf.annotation.Syntax;
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import com.runicrealms.runicdoors.RunicDoors;
 import com.runicrealms.runicdoors.config.ConfigSave;
 import com.runicrealms.runicdoors.config.DoorDelete;

@@ -1,6 +1,6 @@
 package com.runicrealms.runicdoors;
 
-import com.runicrealms.libs.acf.PaperCommandManager;
+import co.aikar.commands.PaperCommandManager;
 import com.runicrealms.runicdoors.commands.DoorCMD;
 import com.runicrealms.runicdoors.commands.PortalCMD;
 import com.runicrealms.runicdoors.config.ConfigLoad;
@@ -24,7 +24,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public final class RunicDoors extends JavaPlugin {
     private static RunicDoors instance;
