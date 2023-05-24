@@ -3,10 +3,7 @@ package com.runicrealms.runicdoors.listeners;
 import com.runicrealms.runicdoors.RunicDoors;
 import com.runicrealms.runicdoors.portal.Portal;
 import net.raidstone.wgevents.events.RegionEnteredEvent;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -48,7 +45,12 @@ public class ActivationListener implements Listener {
         }
         // Play particle, then teleport, then play particle again
         playPortalEffect(player);
-        player.teleport(RunicDoors.inst().getDestinations().get(foundPortal.getDestination()));
+        try {
+            player.teleport(RunicDoors.inst().getDestinations().get(foundPortal.getDestination()));
+        } catch (Exception e) {
+            Bukkit.getLogger().severe("RunicDoors failed to find destination for portal!");
+            e.printStackTrace();
+        }
         playPortalEffect(player);
     }
 

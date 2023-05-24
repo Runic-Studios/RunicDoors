@@ -22,7 +22,7 @@ public class DestinationConfigWrite {
             config.set(name + ".pos.Z", location.getZ());
             config.set(name + ".pos.pitch", location.getPitch());
             config.set(name + ".pos.yaw", location.getYaw());
-            RunicDoors.inst().saveConfiguration(RunicDoors.inst().getDestinationFile(), RunicDoors.inst().getDoorFileConfig());
+            RunicDoors.inst().saveConfiguration(RunicDoors.inst().getDestinationFile(), RunicDoors.inst().getDestinationFileConfig());
         });
     }
 
@@ -34,7 +34,7 @@ public class DestinationConfigWrite {
         }
         Bukkit.getScheduler().runTaskAsynchronously(RunicDoors.inst(), () -> {
             config.set(name, null);
-            RunicDoors.inst().saveConfiguration(RunicDoors.inst().getDestinationFile(), RunicDoors.inst().getDoorFileConfig());
+            RunicDoors.inst().saveConfiguration(RunicDoors.inst().getDestinationFile(), RunicDoors.inst().getDestinationFileConfig());
         });
     }
 }
