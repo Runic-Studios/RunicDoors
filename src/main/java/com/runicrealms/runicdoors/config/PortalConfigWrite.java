@@ -25,6 +25,7 @@ public class PortalConfigWrite {
             }
             config.set(name + ".destination", portal.getDestination());
             config.set(name + ".regionName", portal.getRegionName());
+            config.set(name + ".requiredLevel", portal.getRequiredLevel());
             RunicDoors.inst().saveConfiguration(RunicDoors.inst().getPortalFile(), RunicDoors.inst().getPortalFileConfig());
         });
     }

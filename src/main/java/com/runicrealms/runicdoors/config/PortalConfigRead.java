@@ -15,8 +15,6 @@ public class PortalConfigRead {
         Bukkit.getScheduler().runTaskAsynchronously(RunicDoors.inst(), () -> {
             Bukkit.getLogger().info("RunicDoors: Loading all portals!");
             for (String key : portalFileConfig.getKeys(false)) {
-                World world = getWorld(portalFileConfig, key);
-                if (world == null) continue;
                 Material trigger = Material.AIR;
                 if (!portalFileConfig.getString(key + ".triggerblock").equalsIgnoreCase("AIR") && !portalFileConfig.getString(key + ".triggerblock").equals("none")) {
                     trigger = Material.matchMaterial(portalFileConfig.getString(key + ".triggerblock"));
@@ -28,7 +26,6 @@ public class PortalConfigRead {
                 Portal portal = new Portal(destination, key, regionName, trigger, requiredLevel);
                 RunicDoors.inst().getPortals().put(key, portal);
             }
-            Bukkit.broadcastMessage("Loading Destinations");
             for (String key : destinationFileConfig.getKeys(false)) {
                 World world = getWorld(destinationFileConfig, key);
                 if (world == null) continue;
