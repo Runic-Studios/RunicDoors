@@ -1,9 +1,15 @@
 package com.runicrealms.runicdoors.listeners;
 
+import com.runicrealms.plugin.RunicCore;
+import com.runicrealms.plugin.player.CombatManager;
 import com.runicrealms.runicdoors.RunicDoors;
 import com.runicrealms.runicdoors.portal.Portal;
 import net.raidstone.wgevents.events.RegionEnteredEvent;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -37,6 +43,15 @@ public class ActivationListener implements Listener {
             }
         }
         if (foundPortal == null) return;
+        // PvP combat
+        if (RunicCore.getCombatAPI().isInCombat(player.getUniqueId())
+                && RunicCore.getCombatAPI().getCombatType(player.getUniqueId()) == CombatManager.CombatType.PLAYER) {
+            flingPlayer(player);
+            player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.5f, 1.0f);
+            player.sendMessage(ChatColor.RED + "You cannot use that in PvP Combat!");
+            return;
+        }
+        // Level requirement
         if (player.getLevel() < foundPortal.getRequiredLevel()) {
             flingPlayer(player);
             player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.5f, 1.0f);
