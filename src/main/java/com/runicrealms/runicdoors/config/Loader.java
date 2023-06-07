@@ -2,7 +2,6 @@ package com.runicrealms.runicdoors.config;
 
 import com.runicrealms.runicdoors.RunicDoors;
 import com.runicrealms.runicdoors.door.Door;
-import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -21,6 +20,5 @@ public class Loader extends BukkitRunnable {
             i++;
         }
         this.cancel();
-        Bukkit.broadcastMessage("Loaded and closed all doors!");
     }
 }
