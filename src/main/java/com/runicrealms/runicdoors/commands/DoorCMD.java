@@ -3,6 +3,7 @@ package com.runicrealms.runicdoors.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import com.runicrealms.runicdoors.RunicDoors;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 @CommandAlias("door|doors|d|doorcommand|runicdoors|runicdoor")
+@CommandPermission("runic.op")
 public class DoorCMD extends BaseCommand {
     @Subcommand("setanimation|animation|anim|a")
     @CommandCompletion("@Animations")

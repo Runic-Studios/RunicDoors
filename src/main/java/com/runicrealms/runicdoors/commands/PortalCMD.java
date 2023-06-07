@@ -4,6 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player;
 
 @SuppressWarnings("unused")
 @CommandAlias("portal|portals|portalcommand|runicportals|runicportal")
+@CommandPermission("runic.op")
 public class PortalCMD extends BaseCommand {
     private static final String PREFIX = ChatColor.RED + "[RunicDoors] ";
 
