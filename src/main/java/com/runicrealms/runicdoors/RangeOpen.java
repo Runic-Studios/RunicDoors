@@ -20,7 +20,7 @@ public class RangeOpen extends BukkitRunnable {
         player.setVelocity(direction.multiply((float) 0.1 * door.getKnockback()));
         //if the doors open set some blocks to prevent them passing through
         if (door.getOpen()) {
-            EfficientBlock.placeClientSideMaterial(door.getConnections(), Material.BARRIER, player, Particle.BARRIER);
+            EfficientBlock.placeClientSideMaterial(door.getConnections(), Material.BARRIER, player, Particle.BLOCK_MARKER);
         }
 
         //don't do all the calculating if there's no message to display
