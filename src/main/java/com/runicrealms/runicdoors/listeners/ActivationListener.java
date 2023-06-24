@@ -44,6 +44,7 @@ public class ActivationListener implements Listener {
         }
         if (foundPortal == null) return;
         // PvP combat
+        // TODO: uses deprecated method, needs fix
         if (RunicCore.getCombatAPI().isInCombat(player.getUniqueId())
                 && RunicCore.getCombatAPI().getCombatType(player.getUniqueId()) == CombatType.PLAYER) {
             flingPlayer(player);
