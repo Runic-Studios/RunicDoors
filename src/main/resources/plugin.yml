@@ -1,6 +1,6 @@
 name: RunicDoors
 version: ${project.version}
-main: com.runicrealms.runicdoors.RunicDoors
+main: com.runicrealms.plugin.runicdoors.RunicDoors
 api-version: 1.15
 authors: [ hidden1nin ]
 description: Pretty Doors
